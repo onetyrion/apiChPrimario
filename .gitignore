@@ -33,7 +33,7 @@ package-lock.json
 /models
 
 #migration
-/migration
+/migrations
 
 #seeders
 /seeders

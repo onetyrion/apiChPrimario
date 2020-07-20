@@ -91,6 +91,7 @@ const DeleteUser = async(req,res)=>{
                 Rut:req.params.userRUT
             }
         })
+        console.log(req.params)
         if (typeof rutUsers[0] == 'undefined') {
             return res.status(422).json({errores : "El Rut ingresado no esta registrado"})
         }

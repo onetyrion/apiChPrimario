@@ -5,14 +5,13 @@ const { json } = require("body-parser");
 const cors = require('cors');
 
 //Imports
-import usersRouter from "./routes/usersRoute";
-import loginRouter from "./routes/loginRoute";
 import router from "./routes/api";
 
 //Initialization
 const app = express();
 app.use(cors());
 
+//Auth Database trans and Datamart
 require('./database/database');
 require('./database/databaseDM');
 
@@ -30,14 +29,14 @@ var corsOptions = {
 }
 
 app.get('/', cors(corsOptions), (req, res) =>{    
-    res.json({mensaje: 'ok'});
+  res.json({mensaje: 'ok'});
 });
+
 //middlewares
 app.use(morgan("dev"));
 app.use(json());
 
 //Routers
 app.use('/api',router);
-
 
 export default app;

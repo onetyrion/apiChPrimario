@@ -9,7 +9,7 @@ const { users} = require("../database/database");
 //ROUTES 
 
 usersRouter.post('/',[
-    //Check Parameters
+    //Check Parameters on Body
     check('Rut','El Rut es Obligatorio').not().isEmpty(),
     check('Nombre','El Nombre es Obligatoria').not().isEmpty(),
     check('Apellidos','Los Apellidos es Obligatoria').not().isEmpty(),
@@ -18,20 +18,34 @@ usersRouter.post('/',[
     check('Cargo','El cargo es Obligatoria').not().isEmpty()
 
 ],async (req,res) => {
-
     //Check Errors
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         return res.status(422).json({errores : errors.array()})
     }
-
     //Load Controller
     CreatingUser(req,res);
 }); 
 
 usersRouter.get('/',ListUsers)
 
-usersRouter.put('/:userRUT',UpdateUser)
+usersRouter.put('/:userRUT',[
+    //Check Parameters on Body
+    check('Rut','El Rut es Obligatorio').not().isEmpty(),
+    check('Nombre','El Nombre es Obligatoria').not().isEmpty(),
+    check('Apellidos','Los Apellidos es Obligatoria').not().isEmpty(),
+    check('Correo_electronico','El Email es Obligatoria').isEmail(),
+    check('Estado','El estado es Obligatoria').not().isEmpty(),
+    check('Cargo','El cargo es Obligatoria').not().isEmpty()
+],async (req,res) =>{
+    //Check Errors
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(422).json({errores : errors.array()})
+    }
+    //Load Controller
+    UpdateUser(req,res);
+})
 
 usersRouter.delete('/:userRUT',DeleteUser)
 

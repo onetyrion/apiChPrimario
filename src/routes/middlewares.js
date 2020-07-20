@@ -16,12 +16,13 @@ const checkToken = (req, res, next) => {
         return res.json({ error: "El token es invalido",userToken});
     }
     //Verificacion de Expiracion del token 5min
-    if(payload.expiredAt < moment.unix()){
+    console.log(payload.expiredAt+"\n"+moment().unix());
+    if(payload.expiredAt < moment().unix()){
         return res.json({ error: "El token ha expirado"});
     }
 
     req.userId=payload.userid;
-    next()
+    next();
 }
 
 module.exports = {

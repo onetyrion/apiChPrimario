@@ -3,14 +3,13 @@ const { users, login } = require("../database/database");
 
 //POST Create User
 const CreatingUser = async(req,res)=>{
-    console.log(req.body);
     const { Rut,Nombre,Apellidos,Correo_electronico,Estado,Cargo } = req.body;
     try {
         //VALID RUT ON TABLE USERS
         const rutUsers = await users.findAll({
             attributes: ['Rut'],
             where:{
-                Rut:req.body.Rut
+                Rut:Rut
             }
         })
         if (typeof rutUsers[0] != 'undefined') {
@@ -44,7 +43,6 @@ const CreatingUser = async(req,res)=>{
 const ListUsers = async(req,res)=>{
     try {
         const UsuariosList = await users.findAll();
-        console.log("Usuarios List");
         res.json(UsuariosList);
     } catch (error) {
         console.log(error);
@@ -57,7 +55,6 @@ const ListUsers = async(req,res)=>{
 //PUT UPDATE Users
 const UpdateUser = async(req,res)=>{
     try {
-        console.log(req.body.userRUT)
         //VALID RUT ON TABLE USERS
         const rutUsers = await users.findAll({
             attributes: ['Rut'],
@@ -103,7 +100,7 @@ const DeleteUser = async(req,res)=>{
         });       
         console.log(rutLogin[0])
         if (typeof rutLogin[0] != 'undefined') {
-            return res.status(422).json({errores : "Primero borre el usuario"})
+            return res.status(422).json({errores : "Primero borre el usuario en el login"})
         }
         
         await users.destroy({

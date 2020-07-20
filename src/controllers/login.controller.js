@@ -4,8 +4,6 @@ const bcrypt = require('bcryptjs')
 
 //POST Create User
 const CreatingUser = async(req,res)=>{
-
-    console.log(req.body);
     req.body.Contraseña=bcrypt.hashSync(req.body.Contraseña,10);
     const { Rut,Contraseña,Id_rol } = req.body;
     try {
@@ -29,7 +27,6 @@ const CreatingUser = async(req,res)=>{
         if (typeof rutLogin[0] != 'undefined') {
             return res.status(422).json({errores : "El Rut ingresado ya existe"})
         }
-
         //VALID Id_rol on Table ROL
         const rolUsers = await rol.findAll({
             where:{
@@ -59,7 +56,6 @@ const CreatingUser = async(req,res)=>{
        }) 
     }
 }
-
 //Get List login
 const ListUsers = async(req,res)=>{
     try {

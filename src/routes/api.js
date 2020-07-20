@@ -1,11 +1,16 @@
 const router = require('express').Router();
 
+//Imports
 const middleware = require('./middlewares');
-const loginRoute = require('./loginRoute');
 const apiUserRoute = require('./usersRoute');
-const FACT_MantencionRouter = require('./FACT_mantencionesRoute');
+const loginRoute = require('./loginRoute');
+const factRouter = require('./FactRoute');
+const authRoute = require('./authRoute');
 
+//Routers
+router.use('/auth', authRoute);
 router.use('/users', middleware.checkToken, apiUserRoute);
-router.use('/login', loginRoute);
-router.use('/dm',FACT_MantencionRouter);
+router.use('/login',middleware.checkToken, loginRoute);
+router.use('/dm', middleware.checkToken,factRouter);
+
 module.exports = router;

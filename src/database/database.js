@@ -4,6 +4,7 @@ const {
 const usersModel = require('../models/usersModel');
 const loginModel = require('../models/loginModel');
 const rolModel = require('../models/rolModel');
+const componenteModel = require('../models/componentModel');
 
 const sequelize = new Sequelize('Mantencion', "onetyrion", 'Test!01', {
 	dialect: 'mssql',
@@ -28,6 +29,7 @@ const sequelize = new Sequelize('Mantencion', "onetyrion", 'Test!01', {
 const users = usersModel(sequelize, Sequelize);
 const login = loginModel(sequelize, Sequelize);
 const rol = rolModel(sequelize, Sequelize);
+const componente = componenteModel(sequelize, Sequelize);
 
 sequelize.sync({
 		force: false
@@ -39,5 +41,6 @@ sequelize.sync({
 module.exports = {
 	users,
 	login,
-	rol
+	rol,
+	componente
 }

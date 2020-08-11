@@ -1,15 +1,14 @@
-const {
-	Sequelize
-} = require('sequelize');
+const {	Sequelize} = require('sequelize');
+const config = require('../../config/config');
 
 //models
 const FACT_MantencionModel = require('../models/DM/FACT_Mantencion');
 const DIM_TiempoModel = require('../models/DM/DIM_Tiempo');
 
-const sequelize = new Sequelize('MantencionDatamart', "onetyrion", 'Test!01', {
+const sequelize = new Sequelize(config.dbnamedm, config.username, config.password, {
 	dialect: 'mssql',
-	host: 'DESKTOP-8RCV95Q',
-    port: '1433',
+	host: config.host,
+    port: config.port,
 	timestamps: false,
 	pool: {
 		max: 5,

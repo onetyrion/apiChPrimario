@@ -1,9 +1,13 @@
 module.exports = (sequelize,type) =>{
-    return sequelize.define("[Componente]",{
+    return sequelize.define("Componente",{
         Id_componente:{
             type:type.INTEGER,
             autoIncrement: true,
-            primaryKey:true
+            primaryKey:true,
+            references: {
+                model: 'Mantencion',
+                key: 'Id_componente'
+            }
         },
         Denominacion:{
             type:type.STRING,

@@ -23,7 +23,7 @@ var corsOptions = {
       callback(null, true);
     } else {
       console.log(origin)
-      callback(new Error('Not allowed by CORS, contacte con el administrador del sistema diego.m.tapia.z@gmail.com'));
+      callback(new Error('Not allowed by CORS, contact to admin system diego.m.tapia.z@gmail.com'));
     }
   }
 }

@@ -3,7 +3,7 @@ const componentRoute = require("express").Router();
 const { check, validationResult } = require('express-validator');
 
 //Controllers
-const { CreatingComponent, ListComponent, UpdateComponente, DeleteComponent } = require("../controllers/component.controller");
+const { CreatingComponent, ListComponent, UpdateComponente, DeleteComponent } = require("../../controllers/component.controller");
 
 
 //Routes Controllers

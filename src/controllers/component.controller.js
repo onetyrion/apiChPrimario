@@ -68,7 +68,7 @@ const UpdateComponente = async(req,res)=>{
 }
 //DELETE User
 const DeleteComponent = async(req,res)=>{
-    if (!Number.isInteger(req.params.id_componente)) {
+    if (Number.isInteger(req.params.id_componente)) {
         return res.status(422).json({errores : "El id del componente no es valido"})
     }
     try {

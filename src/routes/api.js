@@ -10,6 +10,7 @@ const componentRoute = require('./Transc/componentRoute');
 const mantencionRoute = require('./Transc/mantencionRoute');
 const fallamantencionRoute = require('./Transc/fallaMantencionRoute');
 const fallaRoute = require('./Transc/fallaRoute');
+const reporteKPIRoute = require('./Transc/reporteKPIRoute');
 
 //Routers
 router.use('/auth', authRoute);
@@ -21,6 +22,7 @@ router.use('/components',middleware.checkToken,componentRoute);
 router.use('/mantencion',middleware.checkToken,mantencionRoute);
 router.use('/fallamantencion',middleware.checkToken,fallamantencionRoute);
 router.use('/falla',middleware.checkToken,fallaRoute);
+router.use('/reportekpi',middleware.checkToken,reporteKPIRoute);
 
 
 module.exports = router;

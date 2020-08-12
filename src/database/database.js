@@ -10,7 +10,10 @@ const tipofallaModel = require('../models/Transc/tipo_falla.model');
 const categoriaModel = require('../models/Transc/categoria.model');
 const fallaModel = require('../models/Transc/falla.model');
 const fallaMantencionModel = require('../models/Transc/fallaMantencion.model');
-// const maquinariaModel = require('../models/maquinariaModel')
+const maquinariaModel = require('../models/Transc/maquinaria.model');
+const reporteKPIModel = require('../models/Transc/reporteKPI.model');
+const kpiModel = require('../models/Transc/kpi.model');
+const programaMantencionModel = require('../models/Transc/programaMantencion.model');
 
 const sequelize = new Sequelize(config.dbnametrans, config.username, config.password, {
 	dialect: 'mssql',
@@ -32,6 +35,7 @@ const sequelize = new Sequelize(config.dbnametrans, config.username, config.pass
 // .catch(function (err) {
 //   console.log('Unable to connect to the database:', err);
 // });
+
 const users = usersModel(sequelize, Sequelize);
 const login = loginModel(sequelize, Sequelize);
 const rol = rolModel(sequelize, Sequelize);
@@ -41,7 +45,10 @@ const tipoFalla = tipofallaModel(sequelize, Sequelize);
 const categoria = categoriaModel(sequelize, Sequelize);
 const falla = fallaModel(sequelize, Sequelize);
 const fallaMantencion = fallaMantencionModel(sequelize, Sequelize);
-// const maquinaria = maquinariaModel(sequelize, Sequelize);
+const maquinaria = maquinariaModel(sequelize, Sequelize);
+const reporteKPI = reporteKPIModel(sequelize,Sequelize);
+const kpi = kpiModel(sequelize,Sequelize);
+const programaMantencion = programaMantencionModel(sequelize,Sequelize);
 
 sequelize.sync({
 		force: false
@@ -60,5 +67,8 @@ module.exports = {
 	categoria,
 	falla,
 	fallaMantencion,
-	// maquinaria,
+	maquinaria,
+	reporteKPI,
+	kpi,
+	programaMantencion
 }

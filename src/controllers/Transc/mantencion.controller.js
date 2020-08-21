@@ -95,7 +95,7 @@ const UpdateMantencion = async(req,res)=>{
         return res.status(500),json({
            message:"Ha ocurrido un error",
            data:{}
-       })         
+       })          
     }
 }
 //DELETE

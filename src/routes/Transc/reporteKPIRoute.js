@@ -3,60 +3,45 @@ const reporteKPIRoute = require("express").Router();
 const { check, validationResult } = require('express-validator');
 
 //Controllers
-const { ListreporteKPI } = require("../../controllers/Transc/reporteKPI.controller");
+const { ListreporteKPI,creatingReporteKPI,updateReporteKPI,deleteReporteKPI } = require("../../controllers/Transc/reporteKPI.controller");
 
 
 //Routes Controllers
-// reporteKPIRoute.post('/', [
-//     check('Id_componente', 'El componente es Obligatorio').not().isEmpty(),
-//     check('Id_evento', 'El evento es Obligatorio').not().isEmpty(),
-//     check('Id_tipo', 'El tipo es Obligatorio').not().isEmpty(),
-//     check('Fecha_mantencion', 'La fecha es Obligatoria').not().isEmpty(),
-//     check('Duracion', 'La duracion es Obligatoria').not().isEmpty(),
-//     check('Descripcion', 'la descripcion es Obligatorio').not().isEmpty(),
-//     check('Horas_programadas', 'las horas son obligatorias').not().isEmpty(),
-//     check('Horas_no_programadas', 'las horas son obligatorias').not().isEmpty(),
-//     check('Cantidad_evProgramados', 'La cantidad de eventos son obligatorias').not().isEmpty(),
-//     check('Cantidad_evNoProgramados', 'La cantidad de eventos son obligatorias').not().isEmpty(),
-//     check('RFCA', 'El RFCA es Obligatorio').not().isEmpty(),
-//     check('Area', 'El Area es Obligatorio').not().isEmpty(),
-//     check('OT', 'La OT es Obligatorio').not().isEmpty(),
-// ], async (req, res) => {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//         return res.status(422).json({
-//             errores: errors.array()
-//         })
-//     }
-//     creatingMantencion(req, res);
-// });
+reporteKPIRoute.post('/', [
+    check('Fecha', 'La fecha es Obligatoria').not().isEmpty(),
+    check('Resultado_kpi', 'El resultado del kpi es Obligatorio').not().isEmpty(),
+    check('Mes', 'El mes es Obligatorio').not().isEmpty(),
+    check('Id_maquinaria', 'La maquinaria tiene que ser valido').isInt(),
+    check('Id_kpi', 'El KPI tiene que ser valido').isInt(),
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({
+            errores: errors.array()
+        })
+    }
+    creatingReporteKPI(req, res);
+});
 
 reporteKPIRoute.get('/', ListreporteKPI);
 
-// reporteKPIRoute.put('/:Id_mantencion', [
-//     check('Id_componente', 'El componente es Obligatorio').not().isEmpty(),
-//     check('Id_evento', 'El evento es Obligatorio').not().isEmpty(),
-//     check('Id_tipo', 'El tipo es Obligatorio').not().isEmpty(),
-//     check('Fecha_mantencion', 'La fecha es Obligatoria').not().isEmpty(),
-//     check('Duracion', 'La duracion es Obligatoria').not().isEmpty(),
-//     check('Descripcion', 'la descripcion es Obligatorio').not().isEmpty(),
-//     check('Horas_programadas', 'las horas son obligatorias').not().isEmpty(),
-//     check('Horas_no_programadas', 'las horas son obligatorias').not().isEmpty(),
-//     check('Cantidad_evProgramados', 'La cantidad de eventos son obligatorias').not().isEmpty(),
-//     check('Cantidad_evNoProgramados', 'La cantidad de eventos son obligatorias').not().isEmpty(),
-//     check('RFCA', 'El RFCA es Obligatorio').not().isEmpty(),
-//     check('Area', 'El Area es Obligatorio').not().isEmpty(),
-//     check('OT', 'La OT es Obligatorio').not().isEmpty(),
-// ], async (req, res) => {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//         return res.status(422).json({
-//             errores: errors.array()
-//         })
-//     }
-//     UpdateMantencion(req, res);
-// });
+reporteKPIRoute.put('/:Id_reportekpi', [
+    check('Fecha', 'La fecha es Obligatoria').not().isEmpty(),
+    check('Resultado_kpi', 'El resultado del kpi es Obligatorio').not().isEmpty(),
+    check('Mes', 'El mes es Obligatorio').not().isEmpty(),
+    check('Id_maquinaria', 'La maquinaria tiene que ser valido').isInt(),
+    check('Id_kpi', 'El KPI tiene que ser valido').isInt(),
+], async (req, res) => {
+    const errors = validationResult(req);
+    console.log(errors)
+    if (!errors.isEmpty()) {
+        return res.status(422).json({
+            errores: errors.array()
+        })
+    }
+    updateReporteKPI(req, res);
+});
 
-// reporteKPIRoute.delete('/:Id_mantencion', DeleteMantencion)
+reporteKPIRoute.delete('/:Id_reportekpi', deleteReporteKPI)
 
 module.exports = reporteKPIRoute;

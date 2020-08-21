@@ -3,11 +3,7 @@ module.exports = (sequelize,type) =>{
         Id_fallaComponente:{
             type:type.INTEGER,
             autoIncrement: true,
-            primaryKey:true,
-            references: {
-                model: 'Componente',
-                key: 'Id_fallaComponente'
-            }
+            primaryKey:true
         },
         Id_componente:{
             type:type.INTEGER,

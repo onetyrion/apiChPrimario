@@ -2,7 +2,9 @@ module.exports = (sequelize,type) =>{
     return sequelize.define("ReporteKPI",{
         Id_reportekpi:{
             type:type.INTEGER,
-            primaryKey:true
+            primaryKey:true,
+            autoIncrement: true
+            
         },
         Id_maquinaria:{
             type:type.INTEGER,

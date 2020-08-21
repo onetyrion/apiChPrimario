@@ -1,23 +1,19 @@
 
 const { fallaMantencion, mantencion, falla, categoria, tipoFalla } = require("../../database/database");
+const { validExist } = require("../Helpers");
 
 //POST Create 
 const creatingFalla = async(req,res)=>{
     const { Id_categoria,Id_tipo,Descripcion_causa,Falla } = req.body;
+    const errors = []
 
-    //VALID ID_CATEGORIA
-    const IdCategoria = await categoria.findAll({
-        attributes: ['Id_categoria'], where:{Id_categoria:Id_categoria}
-    });
-    if (typeof IdCategoria[0] == 'undefined') {
-        return res.status(422).json({errores : "La categoria no está registrada"})
-    }
-    //VALID ID_TIPO
-    const IdTipoFalla = await tipoFalla.findAll({
-        attributes: ['Id_tipo'], where:{Id_tipo:Id_tipo}
-    });
-    if (typeof IdTipoFalla[0] == 'undefined') {
-        return res.status(422).json({errores : "El tipo de falla no está registrada"})
+    const categoriaResult = await validExist("categoria",Id_categoria,"Id_categoria");
+    const tipoFallaResult = await validExist("tipoFalla",Id_tipo,"Id_tipo");
+
+    categoriaResult != null ? errors.push(categoriaResult) : null;
+    tipoFallaResult != null ? errors.push(tipoFallaResult) : null;
+    if (errors.length>0) {
+        return res.status(422).json({errors});
     }
     
     try {
@@ -62,29 +58,17 @@ const updateFalla = async(req,res)=>{
     const Id_falla = req.params.Id_falla;
     //console.log(req)
     try {
-        //VALID ID_FALLA
-        const Idfalla = await falla.findAll({
-            attributes: ['Id_falla'],
-            where:{
-                Id_falla:Id_falla
-            }
-        });
-        if (typeof Idfalla[0] == 'undefined') {
-            return res.status(422).json({errores : "El id ingresado no esta registrado"})
-        }
-        //VALID ID_CATEGORIA
-        const IdCategoria = await categoria.findAll({
-            attributes: ['Id_categoria'], where:{Id_categoria:Id_categoria}
-        });
-        if (typeof IdCategoria[0] == 'undefined') {
-            return res.status(422).json({errores : "La categoria no está registrada"})
-        }
-        //VALID ID_TIPO
-        const IdTipoFalla = await tipoFalla.findAll({
-            attributes: ['Id_tipo'], where:{Id_tipo:Id_tipo}
-        });
-        if (typeof IdTipoFalla[0] == 'undefined') {
-            return res.status(422).json({errores : "El tipo de falla no está registrada"})
+        const errors = []
+
+        const fallaResult = await validExist("falla",Id_falla,"Id_falla");
+        const categoriaResult = await validExist("categoria",Id_categoria,"Id_categoria");
+        const tipoFallaResult = await validExist("tipoFalla",Id_tipo,"Id_tipo");
+        
+        fallaResult != null ? errors.push(fallaResult) : null;
+        categoriaResult != null ? errors.push(categoriaResult) : null;
+        tipoFallaResult != null ? errors.push(tipoFallaResult) : null;
+        if (errors.length>0) {
+            return res.status(422).json({errors});
         }
 
         //UPDATE
@@ -103,33 +87,22 @@ const updateFalla = async(req,res)=>{
 }
 //DELETE 
 const deleteFalla = async(req,res)=>{
+    const errors = [];
     if (Number.isInteger(req.params.Id_falla)) {
-        return res.status(422).json({errores : "El id de la falla no es valido"})
+        return res.status(422).json({errores : "El id de la falla no es valido"});
     }
     const Id_falla = req.params.Id_falla;
 
     try {
-        //VALID ID_FALLA
-        const Idfalla = await falla.findAll({
-            attributes: ['Id_falla'],
-            where:{
-                Id_falla:Id_falla
-            }
-        });
-        if (typeof Idfalla[0] == 'undefined') {
-            return res.status(422).json({errores : "El id ingresado no esta registrado"})
+        const fallaResult = await validExist("falla",Id_falla,"Id_falla");
+        const fallaMantencionResult = await validExist("fallaMantencion",Id_falla,"Id_falla");
+
+        fallaResult != null ? errors.push(fallaResult) : null;
+        fallaMantencionResult != null ? errors.push(fallaMantencionResult) : null;
+
+        if (errors.length>0) {
+            return res.status(422).json({errors});
         }
-        //VALID ID_FALLAMANTENCION
-        const IdfallaMantencion = await fallaMantencion.findAll({
-            attributes: ['Id_FallaMantencion'],
-            where:{
-                Id_falla:Id_falla
-            }
-        });
-        if (typeof IdfallaMantencion[0] != 'undefined') {
-            return res.status(422).json({errores : "La falla está asociada a un falla-mantencion"})
-        }
-        
         
         await fallaMantencion.destroy({
             where:{ Id_falla: Id_falla}

@@ -3,15 +3,7 @@ module.exports = (sequelize,type) =>{
         Id_area:{
             type:type.INTEGER,
             autoIncrement: true,
-            primaryKey:true,
-            references: {
-                model: 'Usuario_AreaProductiva',
-                key: 'Id_area'
-            },
-            references: {
-                model: 'Maquinaria',
-                key: 'Id_area'
-            }
+            primaryKey:true
         },
         Nombre_area:{
             type:type.STRING,

@@ -1,11 +1,20 @@
 
-const { users, login, componente } = require("../database/database");
+const { users, login, componente,maquinaria } = require("../database/database");
 
 //POST Create Component
 const CreatingComponent = async(req,res)=>{
     const { Denominacion,Id_maquinaria,Estado } = req.body;
     try {
-
+        //VALID EXIST ON TABLE MAQUINARIA AND ESTADO IS BINARY
+        const IdMaquinaria = await maquinaria.findAll({
+            attributes: ['Id_maquinaria'],
+            where:{
+                Id_maquinaria:Id_maquinaria
+            }
+        });
+        if (typeof IdMaquinaria[0] === "undefined" || !(Estado == true || Estado == false)) {
+            return res.status(422).json({errores : "Verifique los datos ingresados (Maquinaria, Estado)"})
+        }
         let newUser = await componente.create({
             Denominacion,
             Id_maquinaria,
@@ -41,8 +50,20 @@ const ListComponent = async(req,res)=>{
 }
 //PUT UPDATE Componentes
 const UpdateComponente = async(req,res)=>{
-    //console.log(req)
+    const { Denominacion,Id_maquinaria,Estado } = req.body;
     try {
+        //VALID EXIST ON TABLE MAQUINARIA
+        
+        const IdMaquinaria = await maquinaria.findAll({
+            attributes: ['Id_maquinaria'],
+            where:{
+                Id_maquinaria:Id_maquinaria
+            }
+        });
+        console.log(IdMaquinaria)
+        if (typeof IdMaquinaria[0] === "undefined" || !(Estado == true || Estado == false)) {
+            return res.status(422).json({errores : "Verifique los datos ingresados (Maquinaria, Estado)"})
+        }
         //VALID EXIST ON TABLE componente
         const Idcomponente = await componente.findAll({
             attributes: ['Id_componente'],

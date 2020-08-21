@@ -9,7 +9,7 @@ const { CreatingComponent, ListComponent, UpdateComponente, DeleteComponent } = 
 //Routes Controllers
 componentRoute.post('/', [
     check('Denominacion', 'El nombre es Obligatorio').not().isEmpty(),
-    check('Id_maquinaria', 'la maquinaria no es valida').not().isEmpty(),
+    check('Id_maquinaria', 'El estado tiene que ser valido').isInt(),
     check('Estado', 'El estado tiene que ser valido').isInt()
 ], async (req, res) => {
     const errors = validationResult(req);
@@ -25,7 +25,7 @@ componentRoute.get('/', ListComponent);
 
 componentRoute.put('/:id_componente', [
     check('Denominacion', 'El nombre es Obligatorio').not().isEmpty(),
-    check('Id_maquinaria', 'la maquinaria no es valida').not().isEmpty(),
+    check('Id_maquinaria', 'El estado tiene que ser valido').isInt(),
     check('Estado', 'El estado tiene que ser valido').isInt()
 ], async (req, res) => {
     const errors = validationResult(req);

@@ -4,6 +4,8 @@ const config = require('../../config/config');
 const usersModel = require('../models/usersModel');
 const loginModel = require('../models/loginModel');
 const rolModel = require('../models/rolModel');
+const usuarioAreaProductivaModel = require('../models/Usuario_AreaProductiva.model');
+
 const componenteModel = require('../models/Transc/componente.model');
 const mantencionModel = require('../models/Transc/mantencion.model');
 const tipofallaModel = require('../models/Transc/tipo_falla.model');
@@ -14,6 +16,11 @@ const maquinariaModel = require('../models/Transc/maquinaria.model');
 const reporteKPIModel = require('../models/Transc/reporteKPI.model');
 const kpiModel = require('../models/Transc/kpi.model');
 const programaMantencionModel = require('../models/Transc/programaMantencion.model');
+const areaProductivaModel = require('../models/Transc/areaProductiva.model');
+const eventoModel = require('../models/Transc/evento.model');
+const tipoMantencionModel = require('../models/Transc/tipoMantencion.model');
+const fallaComponenteModel = require('../models/Transc/fallaComponente.model');
+
 
 const sequelize = new Sequelize(config.dbnametrans, config.username, config.password, {
 	dialect: 'mssql',
@@ -49,6 +56,11 @@ const maquinaria = maquinariaModel(sequelize, Sequelize);
 const reporteKPI = reporteKPIModel(sequelize,Sequelize);
 const kpi = kpiModel(sequelize,Sequelize);
 const programaMantencion = programaMantencionModel(sequelize,Sequelize);
+const areaProductiva = areaProductivaModel(sequelize,Sequelize);
+const usuarioAreaProductiva = usuarioAreaProductivaModel(sequelize,Sequelize);
+const evento = eventoModel(sequelize,Sequelize);
+const tipoMantencion = tipoMantencionModel(sequelize,Sequelize);
+const fallaComponente = fallaComponenteModel(sequelize,Sequelize);
 
 sequelize.sync({
 		force: false
@@ -61,14 +73,20 @@ module.exports = {
 	users,
 	login,
 	rol,
-	componente,
+	areaProductiva,
+	usuarioAreaProductiva,
+
 	mantencion,
-	tipoFalla,
-	categoria,
-	falla,
 	fallaMantencion,
+	evento,
+	componente,
+	categoria,
+	tipoFalla,
+	falla,
 	maquinaria,
 	reporteKPI,
 	kpi,
-	programaMantencion
+	programaMantencion,
+	tipoMantencion,
+	fallaComponente
 }

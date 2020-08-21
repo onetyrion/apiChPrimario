@@ -8,10 +8,10 @@ const { listFalla, creatingFalla, updateFalla, deleteFalla } = require("../../co
 
 //Routes Controllers
 fallaRoute.post('/', [
-    check('Id_categoria', 'La id de la matención es Obligatoria').not().isEmpty(),
-    check('Id_tipo', 'La id de la falla es obligatoria').not().isEmpty(),
+    check('Id_categoria', 'La id de la matención es Obligatoria').isInt(),
+    check('Id_tipo', 'La id de la falla es obligatoria').isInt(),
     check('Descripcion_causa', 'La id de la falla es obligatoria').not().isEmpty(),
-    check('Falla', 'La id de la falla es obligatoria').not().isEmpty(),
+    check('Falla', 'La id de la falla es obligatoria').isInt(),
 ], async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -25,10 +25,10 @@ fallaRoute.post('/', [
 fallaRoute.get('/', listFalla);
 
 fallaRoute.put('/:Id_falla', [
-    check('Id_categoria', 'La id de la matención es Obligatoria').not().isEmpty(),
-    check('Id_tipo', 'La id de la falla es obligatoria').not().isEmpty(),
+    check('Id_categoria', 'La id de la matención es Obligatoria').isInt(),
+    check('Id_tipo', 'La id de la falla es obligatoria').isInt(),
     check('Descripcion_causa', 'La id de la falla es obligatoria').not().isEmpty(),
-    check('Falla', 'La id de la falla es obligatoria').not().isEmpty(),
+    check('Falla', 'La id de la falla es obligatoria').isInt(),
 ], async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

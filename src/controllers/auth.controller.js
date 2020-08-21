@@ -32,7 +32,7 @@ const LoginAuth = async(req,res)=>{
         }
     } else {
         res.send({
-            error: "Error en usuario y/o contraseña"
+            error: "Error en usuario y/o contraseña1"
         });
     }
 }

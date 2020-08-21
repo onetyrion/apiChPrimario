@@ -1,40 +1,25 @@
 
 const { login,users, rol } = require("../database/database");
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
+const { validExist } = require("./Helpers");
 
 //POST Create User
 const CreatingUser = async(req,res)=>{
     req.body.Contraseña=bcrypt.hashSync(req.body.Contraseña,10);
     const { Rut,Contraseña,Id_rol } = req.body;
     try {
-        //VALID RUT ON TABLE USERS
-        const rutUsers = await users.findAll({
-            attributes: ['Rut'],
-            where:{
-                Rut:req.body.Rut
-            }
-        })
-        if (typeof rutUsers[0] == 'undefined') {
-            return res.status(422).json({errores : "El Rut ingresado no esta registrado"})
-        }
-        //VALID RUT ON TABLE LOGIN
-        const rutLogin = await login.findAll({
-            attributes: ['Rut'],
-            where:{
-                Rut:req.body.Rut
-            }
-        })       
-        if (typeof rutLogin[0] != 'undefined') {
-            return res.status(422).json({errores : "El Rut ingresado ya existe"})
-        }
-        //VALID Id_rol on Table ROL
-        const rolUsers = await rol.findAll({
-            where:{
-                Id_rol:req.body.Id_rol
-            }
-        })
-        if (typeof rolUsers[0] == 'undefined') {
-            return res.status(422).json({errores : "El ROL ingresado no existe"})
+        
+        const errors = []
+        const loginResult = await validExist("login",Rut,"Rut");
+        const usersResult = await validExist("users",Rut,"Rut");
+        const rolResult = await validExist("rol",Id_rol,"Id_rol");
+
+        loginResult != null ? errors.push(loginResult) : null;
+        usersResult != null ? errors.push(usersResult) : null;
+        rolResult != null ? errors.push(rolResult) : null;
+        
+        if (errors.length>0) {
+            return res.status(422).json({errors});
         }
 
         let newLoginUser = await login.create({
@@ -59,9 +44,6 @@ const CreatingUser = async(req,res)=>{
 //Get List login
 const ListUsers = async(req,res)=>{
     try {
-        //USERID FROM LOGIN TOKEN
-        console.log(req.userId)
-        
         const UsuariosList = await login.findAll();
         console.log("Usuarios List");
         res.json(UsuariosList);
@@ -75,27 +57,13 @@ const ListUsers = async(req,res)=>{
 }
 //PUT UPDATE Users
 const UpdateUser = async(req,res)=>{
+    const Rut = req.params.userRUT;
     try {
-
-        //VALID RUT ON TABLE USERS
-        const rutUsers = await users.findAll({
-            attributes: ['Rut'],
-            where:{
-                Rut:req.body.Rut
-            }
-        })
-        if (typeof rutUsers[0] == 'undefined') {
-            return res.status(422).json({errores : "El Rut ingresado no esta registrado"})
-        }
-
-        //VALID Id_rol on Table ROL
-        const rolUsers = await rol.findAll({
-            where:{
-                Id_rol:req.body.Id_rol
-            }
-        })
-        if (typeof rolUsers[0] == 'undefined') {
-            return res.status(422).json({errores : "El ROL ingresado no existe"}) 
+        const errors = []
+        const usersResult = await validExist("users",Rut,"Rut");
+        usersResult != null ? errors.push(usersResult) : null;
+        if (errors.length>0) {
+            return res.status(422).json({errors});
         }
 
         req.body.Contraseña=bcrypt.hashSync(req.body.Contraseña,10)
@@ -116,12 +84,7 @@ const UpdateUser = async(req,res)=>{
 const DeleteUser = async(req,res)=>{
     try {
         // //VALID RUT ON TABLE LOGIN
-        const rutLogin = await login.findAll({
-            where:{ 
-                Rut: req.params.userRUT
-            }
-        });       
-        console.log(rutLogin[0])
+        const rutLogin = await login.findAll({ where:{  Rut: req.params.userRUT }});      
         if (typeof rutLogin[0] == 'undefined') {
             return res.status(422).json({errores : "El Rut ingresado no existe"})
         }

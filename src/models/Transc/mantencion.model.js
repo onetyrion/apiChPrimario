@@ -7,12 +7,24 @@ module.exports = (sequelize,type) =>{
         },
         Id_componente:{
             type:type.INTEGER,
+            references: {
+                model: 'Componente',
+                key: 'Id_componente'
+            }
         },
         Id_evento:{
-            type:type.INTEGER
+            type:type.INTEGER,
+            references: {
+                model: 'Evento',
+                key: 'Id_evento'
+            }
         },
         Id_tipo:{
-            type:type.INTEGER
+            type:type.INTEGER,
+            references: {
+                model: 'Tipo_Mantencion',
+                key: 'Id_tipo'
+            }
         },
         Fecha_mantencion:{
             type:type.DATE

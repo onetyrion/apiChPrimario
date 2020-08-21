@@ -2,11 +2,7 @@ module.exports = (sequelize,type) =>{
     return sequelize.define("Maquinaria",{
         Id_maquinaria:{
             type:type.INTEGER,
-            primaryKey:true,
-            references: {
-                model: 'Componentes',
-                key: 'Id_maquinaria'
-            }
+            primaryKey:true
         },
         Nombre_maquinaria:{
             type:type.TEXT
@@ -15,7 +11,11 @@ module.exports = (sequelize,type) =>{
             type:type.BOOLEAN
         },
         Id_area:{
-            type:type.INTEGER
+            type:type.INTEGER,
+            references: {
+                model: 'Area_Productiva',
+                key: 'Id_area'
+            }
         },
     },{
         freezeTableName: true

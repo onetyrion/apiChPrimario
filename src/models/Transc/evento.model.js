@@ -3,11 +3,7 @@ module.exports = (sequelize,type) =>{
         Id_evento:{
             type:type.INTEGER,
             autoIncrement: true,
-            primaryKey:true,
-            references: {
-                model: 'Mantencion',
-                key: 'Id_evento'
-            }
+            primaryKey:true
         },
         Nombre_evento:{
             type:type.STRING,

@@ -12,34 +12,32 @@ const trucatedecimal = (num, digits) => {
     return parseFloat(finalResult);
 }
 
-const validateTypes = (x,type) => {
-    var errors = []
+const validateTypes = (x,type,cant) => {
     switch (type) {
         case "string":
             if (!(typeof x === "string")) {
-                errors.push({campo:x,error:" Ingrese un texto válido"});
+                return {campo:x,error:"Ingrese un texto válido"};
             }
-            if (!(x.length <= 255)) {
-                errors.push({campo:x,error:" El texto es mayor a 255 caracteres"});
+            if (!(x.length <= cant)) {
+                return {campo:x,error:`El texto es mayor a ${cant} caracteres`};
             }
             break;
         case "number":
-            if (typeof x !== "number") {
-                errors.push({campo:x,error:" Debe ingresar un numero válido"});
+            if (true) {
+                console.log(typeof Number(x));
+                return{campo:x,error:" Debe ingresar un numero válido"};
             }
             break;
         case "boolean":
             if (x == true || x == false) {
                 break;
             }
-            errors.push({campo:x,error:" Debe ingresar un parametro válido(Booleano)"});
+            return {campo:x,error:" Debe ingresar un parametro válido(Booleano)"};
         default:
                 break;
             }
-        return errors;
+        return;
     }
-
-// const tablas = [["users",users], ["login",login], ["rol",rol], ["areaProductiva",areaProductiva], ["usuarioAreaProductiva",usuarioAreaProductiva],[ "mantencion",mantencion], ["fallaMantencion",fallaMantencion], ["evento",evento], ["componente",componente], ["categoria",categoria], ["tipoFalla",tipoFalla], ["falla",falla],	["maquinaria",maquinaria], ["reporteKPI",reporteKPI],	["kpi",kpi], ["programaMantencion",programaMantencion], ["tipoMantencion",tipoMantencion], ["fallaComponente",fallaComponente]]
 
 const validExist = async(tabla,valor,campo) => {
     var item = [];
@@ -74,5 +72,6 @@ const validExist = async(tabla,valor,campo) => {
 
 module.exports = {
     trucatedecimal,
-    validExist
+    validExist,
+    validateTypes
 }

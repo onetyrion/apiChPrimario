@@ -2,7 +2,8 @@ module.exports = (sequelize,type) =>{
     return sequelize.define("Maquinaria",{
         Id_maquinaria:{
             type:type.INTEGER,
-            primaryKey:true
+            primaryKey:true,
+            autoIncrement: true
         },
         Nombre_maquinaria:{
             type:type.TEXT

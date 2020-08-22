@@ -15,18 +15,6 @@ const CreatingComponent = async(req,res)=>{
             return res.status(422).json({errors});
         }
 
-
-        //VALID EXIST ON TABLE MAQUINARIA AND ESTADO IS BINARY
-        // const IdMaquinaria = await maquinaria.findAll({
-        //     attributes: ['Id_maquinaria'],
-        //     where:{
-        //         Id_maquinaria:Id_maquinaria
-        //     }
-        // });
-        // if (typeof IdMaquinaria[0] === "undefined" || !(Estado == true || Estado == false)) {
-        //     return res.status(422).json({errores : "Verifique los datos ingresados (Maquinaria, Estado)"})
-        // }
-
         let newUser = await componente.create({
             Denominacion,
             Id_maquinaria,

@@ -34,7 +34,7 @@ const sequelize = new Sequelize(config.dbnametrans, config.username, config.pass
 		idle: 10000
 	}
 })
-
+/// TEST CONECTION
 // .authenticate()
 // .then(function(err) {
 //   console.log('Connection has been established successfully.');

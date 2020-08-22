@@ -66,7 +66,7 @@ const UpdateUser = async(req,res)=>{
             return res.status(422).json({errors});
         }
 
-        req.body.Contraseña=bcrypt.hashSync(req.body.Contraseña,10)
+        req.body.pass=bcrypt.hashSync(req.body.pass,10)
         await login.update(req.body,{
             where:{ Rut: req.params.userRUT}
         });

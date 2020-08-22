@@ -23,7 +23,7 @@ componentRoute.post('/', [
 
 componentRoute.get('/', ListComponent);
 
-componentRoute.put('/:id_componente', [
+componentRoute.put('/:Id_componente', [
     check('Denominacion', 'El nombre es Obligatorio').not().isEmpty(),
     check('Id_maquinaria', 'El estado tiene que ser valido').isInt(),
     check('Estado', 'El estado tiene que ser valido').isInt()
@@ -37,6 +37,6 @@ componentRoute.put('/:id_componente', [
     UpdateComponente(req, res);
 });
 
-componentRoute.delete('/:id_componente', DeleteComponent)
+componentRoute.delete('/:Id_componente', DeleteComponent)
 
 module.exports = componentRoute;

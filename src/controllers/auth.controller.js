@@ -11,7 +11,6 @@ const { tokenWord } = require("../../config/token");
 //Routers
 //POST Create User
 const LoginAuth = async(req,res)=>{
-    console.log("Login");
     const userLogin = await login.findOne({
         where: {
             Rut: req.body.Rut
@@ -20,7 +19,7 @@ const LoginAuth = async(req,res)=>{
     if (userLogin) {
         const igualar = bcrypt.compareSync(req.body.Contraseña, userLogin.Contraseña);
         if (igualar) {
-            console.log(tokenWord);
+            userLogin.Contraseña = "LOL";
             res.json({
                 success: createToken(userLogin),
                 user:userLogin

@@ -12,12 +12,14 @@ const fallamantencionRoute = require('./Transc/fallaMantencionRoute');
 const fallaRoute = require('./Transc/fallaRoute');
 const reporteKPIRoute = require('./Transc/reporteKPIRoute');
 const maquinariaRoute = require('./Transc/maquinariaRoute');
+const vauthRoute = require('./vauthRoute');
 
 //Routers BASE
 router.use('/auth', authRoute);
 router.use('/users', middleware.checkToken, apiUserRoute);
 router.use('/login',middleware.checkToken, loginRoute);
 router.use('/dm', middleware.checkToken,factRouter);
+router.use('/vauth', middleware.checkToken, vauthRoute);
 
 //Routers TRANSC
 router.use('/components',middleware.checkToken,componentRoute);

@@ -19,6 +19,7 @@ module.exports = (sequelize,type) =>{
             type:type.BOOLEAN,
         },
     },{
-        freezeTableName: true
+        freezeTableName: true,
+        timestamps: false
     })
 }

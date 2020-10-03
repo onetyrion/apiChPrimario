@@ -1,16 +1,16 @@
 module.exports = (sequelize,type) =>{
     return sequelize.define("Mantencion",{
-        Id_mantencion:{
-            type:type.INTEGER,
-            primaryKey:true,
-            autoIncrement: true,
-        },
         Id_componente:{
             type:type.INTEGER,
             references: {
                 model: 'Componente',
                 key: 'Id_componente'
             }
+        },
+        Id_mantencion:{
+            type:type.INTEGER,
+            primaryKey:true,
+            autoIncrement: true,
         },
         Id_evento:{
             type:type.INTEGER,
@@ -27,7 +27,7 @@ module.exports = (sequelize,type) =>{
             }
         },
         Fecha_mantencion:{
-            type:type.DATE
+            type:type.DATEONLY
         },
         CantEvento_especial:{
             type:type.INTEGER
@@ -36,7 +36,7 @@ module.exports = (sequelize,type) =>{
             type:type.FLOAT
         },
         Descripcion:{
-            type:type.TEXT
+            type:type.STRING
         },
         Horas_programadas:{
             type:type.FLOAT
@@ -54,12 +54,13 @@ module.exports = (sequelize,type) =>{
             type:type.INTEGER
         },
         Area:{
-            type:type.TEXT
+            type:type.STRING
         },
         OT:{
             type:type.INTEGER
         },
     },{
-        freezeTableName: true
+        freezeTableName: true,
+        timestamps: false
     })
 }

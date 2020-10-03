@@ -17,9 +17,9 @@ const LoginAuth = async(req,res)=>{
         }
     });
     if (userLogin) {
-        const igualar = bcrypt.compareSync(req.body.Contraseña, userLogin.Contraseña);
+        const igualar = bcrypt.compareSync(req.body.Password, userLogin.Password);
         if (igualar) {
-            userLogin.Contraseña = "LOL";
+            userLogin.Password = "LOL";
             res.json({
                 success: createToken(userLogin),
                 user:userLogin

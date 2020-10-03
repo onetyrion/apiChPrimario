@@ -13,13 +13,14 @@ const categoriaModel = require('../models/Transc/categoria.model');
 const fallaModel = require('../models/Transc/falla.model');
 const fallaMantencionModel = require('../models/Transc/fallaMantencion.model');
 const maquinariaModel = require('../models/Transc/maquinaria.model');
-const reporteKPIModel = require('../models/Transc/reporteKPI.model');
-const kpiModel = require('../models/Transc/kpi.model');
+const indicadorModel = require('../models/Transc/indicador.model');
 const programaMantencionModel = require('../models/Transc/programaMantencion.model');
 const areaProductivaModel = require('../models/Transc/areaProductiva.model');
 const eventoModel = require('../models/Transc/evento.model');
 const tipoMantencionModel = require('../models/Transc/tipoMantencion.model');
 const fallaComponenteModel = require('../models/Transc/fallaComponente.model');
+const empresaModel = require('../models/Transc/empresa.model');
+const tipoMaquinariaModel = require('../models/Transc/tipoMaquinaria.model');
 
 
 const sequelize = new Sequelize(config.dbnametrans, config.username, config.password, {
@@ -37,10 +38,10 @@ const sequelize = new Sequelize(config.dbnametrans, config.username, config.pass
 /// TEST CONECTION
 // .authenticate()
 // .then(function(err) {
-//   console.log('Connection has been established successfully.');
+//   console.log('Se ha establecido conexión exitosamente.');
 // })
 // .catch(function (err) {
-//   console.log('Unable to connect to the database:', err);
+//   console.log('No se ha podido establecer conexión con la base de datos:', err);
 // });
 
 const users = usersModel(sequelize, Sequelize);
@@ -53,14 +54,15 @@ const categoria = categoriaModel(sequelize, Sequelize);
 const falla = fallaModel(sequelize, Sequelize);
 const fallaMantencion = fallaMantencionModel(sequelize, Sequelize);
 const maquinaria = maquinariaModel(sequelize, Sequelize);
-const reporteKPI = reporteKPIModel(sequelize,Sequelize);
-const kpi = kpiModel(sequelize,Sequelize);
+const indicador = indicadorModel(sequelize,Sequelize);
 const programaMantencion = programaMantencionModel(sequelize,Sequelize);
 const areaProductiva = areaProductivaModel(sequelize,Sequelize);
 const usuarioAreaProductiva = usuarioAreaProductivaModel(sequelize,Sequelize);
 const evento = eventoModel(sequelize,Sequelize);
 const tipoMantencion = tipoMantencionModel(sequelize,Sequelize);
-const fallaComponente = fallaComponenteModel(sequelize,Sequelize);
+const fallaComponente = fallaComponenteModel(sequelize,Sequelize);tipoMaquinariaModel
+const empresa = empresaModel(sequelize,Sequelize);
+const tipoMaquinaria = tipoMaquinariaModel(sequelize,Sequelize);
 
 sequelize.sync({
 		force: false
@@ -84,9 +86,10 @@ module.exports = {
 	tipoFalla,
 	falla,
 	maquinaria,
-	reporteKPI,
-	kpi,
+	indicador,
 	programaMantencion,
 	tipoMantencion,
-	fallaComponente
+	fallaComponente,
+	empresa,
+	tipoMaquinaria
 }

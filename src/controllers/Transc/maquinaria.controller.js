@@ -4,14 +4,16 @@ const { validExist,validateTypes } = require("../Helpers");
 
 //POST Create Maquinaria
 const CreatingMaquinaria = async(req,res)=>{
-    const { Id_area,Nombre_maquinaria,Estado } = req.body;
+    const { Id_area,Id_tipo,Nombre_maquinaria,Estado } = req.body;
     try {
         const errors = [];
         const areaResult = await validExist("areaProductiva",Id_area,"Id_area");
+        const tipoResult = await validExist("tipoMaquinaria",Id_tipo,"Id_tipo");
         const EstadoResult = validateTypes(Estado,"boolean",1);
         const nombreResult = validateTypes(Nombre_maquinaria,"string",150);
 
         areaResult != null ? errors.push(areaResult) : null;
+        tipoResult != null ? errors.push(tipoResult) : null;
         EstadoResult != null ? errors.push(EstadoResult) : null;
         nombreResult != null ? errors.push(nombreResult) : null;
 
@@ -22,7 +24,8 @@ const CreatingMaquinaria = async(req,res)=>{
         let newUser = await maquinaria.create({
             Id_area,
             Nombre_maquinaria,
-            Estado
+            Estado,
+            Id_tipo
         });
         if (newUser) {
             return res.json({
@@ -54,17 +57,19 @@ const ListMaquinaria = async(req,res)=>{
 }
 // PUT UPDATE Maquinaria
 const UpdateMaquinaria = async(req,res)=>{
-    const { Id_area,Nombre_maquinaria,Estado } = req.body;
+    const { Id_area, Nombre_maquinaria, Estado, Id_tipo } = req.body;
     const Id_maquinaria = req.params.Id_maquinaria
     const errors = [];
     try {
         //VALIDATION
         const areaResult = await validExist("areaProductiva",Id_area,"Id_area");
+        const tipoResult = await validExist("tipoMaquinaria",Id_tipo,"Id_tipo");
         const maquinariaResult = await validExist("maquinaria",Id_maquinaria,"Id_maquinaria");
         const EstadoResult = validateTypes(Estado,"boolean",1);
         const nombreResult = validateTypes(Nombre_maquinaria,"string",150);
 
         areaResult != null ? errors.push(areaResult) : null;
+        tipoResult != null ? errors.push(tipoResult) : null;
         EstadoResult != null ? errors.push(EstadoResult) : null;
         nombreResult != null ? errors.push(nombreResult) : null;
         maquinariaResult != null ? errors.push(maquinariaResult) : null;

@@ -11,11 +11,12 @@ const { users} = require("../database/database");
 usersRouter.post('/',[
     //Check Parameters on Body
     check('Rut','El Rut es Obligatorio').not().isEmpty(),
-    check('Nombre','El Nombre es Obligatoria').not().isEmpty(),
-    check('Apellidos','Los Apellidos es Obligatoria').not().isEmpty(),
-    check('Correo_electronico','El Email es Obligatoria').isEmail(),
-    check('Estado','El estado es Obligatoria').not().isEmpty(),
-    check('Cargo','El cargo es Obligatoria').not().isEmpty()
+    check('Nombre','El Nombre es Obligatorio').not().isEmpty(),
+    check('Apellidos','Los Apellidos son Obligatorios').not().isEmpty(),
+    check('Correo_electronico','El Email es Obligatorio').isEmail(),
+    check('Estado','El estado es Obligatorio').not().isEmpty(),
+    check('Cargo','El cargo es Obligatorio').not().isEmpty(),
+    check('Id_empresa','La Empresa es Obligatoria').not().isEmpty()
 
 ],async (req,res) => {
     //Check Errors
@@ -32,11 +33,12 @@ usersRouter.get('/',ListUsers)
 usersRouter.put('/:userRUT',[
     //Check Parameters on Body
     check('Rut','El Rut es Obligatorio').not().isEmpty(),
-    check('Nombre','El Nombre es Obligatoria').not().isEmpty(),
-    check('Apellidos','Los Apellidos es Obligatoria').not().isEmpty(),
-    check('Correo_electronico','El Email es Obligatoria').isEmail(),
-    check('Estado','El estado es Obligatoria').not().isEmpty(),
-    check('Cargo','El cargo es Obligatoria').not().isEmpty()
+    check('Nombre','El Nombre es Obligatorio').not().isEmpty(),
+    check('Apellidos','Los Apellidos son Obligatorios').not().isEmpty(),
+    check('Correo_electronico','El Email es Obligatorio').isEmail(),
+    check('Estado','El estado es Obligatorio').not().isEmpty(),
+    check('Cargo','El cargo es Obligatorio').not().isEmpty(),
+    check('Id_empresa','La Empresa es Obligatoria').not().isEmpty()
 ],async (req,res) =>{
     //Check Errors
     const errors = validationResult(req);

@@ -2,7 +2,8 @@ module.exports = (sequelize,type) =>{
     return sequelize.define("Programa_Mantencion",{
         Id_ProgramaMantencion:{
             type:type.INTEGER,
-            primaryKey:true
+            primaryKey:true,
+            autoIncrement: true
         },
         Id_maquinaria:{
             type:type.INTEGER,
@@ -14,17 +15,18 @@ module.exports = (sequelize,type) =>{
         Id_kpi:{
             type:type.INTEGER,
             references: {
-                model: 'KPI',
+                model: 'Indicador',
                 key: 'Id_kpi'
             }
         },
-        Año:{
+        Year:{
             type:type.INTEGER
         },
         Meta:{
             type:type.FLOAT
         }
     },{
-        freezeTableName: true
+        freezeTableName: true,
+        timestamps: false
     })
 }

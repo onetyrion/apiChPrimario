@@ -1,3 +1,4 @@
+-- First Version DB OLTP
 CREATE DATABASE [Mantencion]
 USE [Mantencion]
 GO

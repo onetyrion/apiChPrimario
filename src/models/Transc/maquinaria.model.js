@@ -6,7 +6,7 @@ module.exports = (sequelize,type) =>{
             autoIncrement: true
         },
         Nombre_maquinaria:{
-            type:type.TEXT
+            type:type.STRING
         },
         Estado:{
             type:type.BOOLEAN
@@ -18,7 +18,15 @@ module.exports = (sequelize,type) =>{
                 key: 'Id_area'
             }
         },
+        Id_tipo:{
+            type:type.INTEGER,
+            references: {
+                model: 'Tipo_Maquinaria',
+                key: 'Id_tipo'
+            }
+        },
     },{
-        freezeTableName: true
+        freezeTableName: true,
+        timestamps: false
     })
 }

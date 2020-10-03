@@ -9,7 +9,7 @@ const { CreatingUser, ListUsers, UpdateUser, DeleteUser } = require("../controll
 //Routes Controllers
 loginRoute.post('/', [
     check('Rut', 'El Rut es Obligatorio').not().isEmpty(),
-    check('pass', 'La contraseña es Obligatoria').not().isEmpty(),
+    check('Password', 'La contraseña es Obligatoria').not().isEmpty(),
     check('Id_rol', 'El rol tiene que ser valido').isInt()
 ], async (req, res) => {
     const errors = validationResult(req);
@@ -25,7 +25,7 @@ loginRoute.get('/', ListUsers)
 
 loginRoute.put('/:userRUT', [
     check('Rut', 'El Rut es Obligatorio').not().isEmpty(),
-    check('pass', 'La contraseña es Obligatoria').not().isEmpty(),
+    check('Password', 'La contraseña es Obligatoria').not().isEmpty(),
     check('Id_rol', 'El rol tiene que ser valido').isInt()
 ], async (req, res) => {
     const errors = validationResult(req);

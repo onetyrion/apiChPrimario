@@ -1,5 +1,5 @@
 module.exports = (sequelize,type) =>{
-    return sequelize.define("[Login]",{
+    return sequelize.define("Login",{
         Rut:{
             type:type.STRING,
             primaryKey:true,
@@ -8,7 +8,7 @@ module.exports = (sequelize,type) =>{
                 key: 'Rut'
             }
         },
-        Contraseña:{
+        Password:{
             type:type.STRING,
         },
         Id_rol:{
@@ -19,6 +19,7 @@ module.exports = (sequelize,type) =>{
             }
         },
     },{
-        freezeTableName: true
+        freezeTableName: true,
+        timestamps: false
     })
 }

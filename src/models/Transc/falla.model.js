@@ -12,6 +12,9 @@ module.exports = (sequelize,type) =>{
                 key: 'Id_categoria'
             }
         },
+        Descripcion_causa:{
+            type:type.STRING
+        },
         Id_tipo:{
             type:type.INTEGER,
             references: {
@@ -19,13 +22,11 @@ module.exports = (sequelize,type) =>{
                 key: 'Id_tipo'
             }
         },
-        Descripcion_causa:{
-            type:type.STRING
-        },
         Falla:{
             type:type.BOOLEAN
         },
     },{
-        freezeTableName: true
+        freezeTableName: true,
+        timestamps: false
     })
 }

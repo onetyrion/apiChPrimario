@@ -1,10 +1,5 @@
 module.exports = (sequelize,type) =>{
-    return sequelize.define("Falla_Compontente",{
-        Id_fallaComponente:{
-            type:type.INTEGER,
-            autoIncrement: true,
-            primaryKey:true
-        },
+    return sequelize.define("Falla_Componente",{
         Id_componente:{
             type:type.INTEGER,
             references: {
@@ -18,8 +13,14 @@ module.exports = (sequelize,type) =>{
                 model: 'Falla',
                 key: 'Id_falla'
             }
+        },
+        Id_fallaComponente:{
+            type:type.INTEGER,
+            autoIncrement: true,
+            primaryKey:true
         }
     },{
-        freezeTableName: true
+        freezeTableName: true,
+        timestamps: false
     })
 }

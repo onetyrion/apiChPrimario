@@ -9,6 +9,7 @@ const { CreatingMaquinaria, ListMaquinaria, UpdateMaquinaria, DeleteMaquinaria }
 //Routes Controllers
 maquinariaRoute.post('/', [
     check('Id_area', 'La area tiene que ser valida').isInt(),
+    check('Id_tipo', 'La area tiene que ser valida').isInt(),
     check('Nombre_maquinaria', 'El nombre tiene que ser valido').not().isEmpty(),
     check('Estado', 'El estado tiene que ser valido').isInt()
 ], async (req, res) => {
@@ -25,6 +26,7 @@ maquinariaRoute.get('/', ListMaquinaria);
 
 maquinariaRoute.put('/:Id_maquinaria', [
     check('Id_area', 'La area tiene que ser valida').isInt(),
+    check('Id_tipo', 'La area tiene que ser valida').isInt(),
     check('Nombre_maquinaria', 'El nombre tiene que ser valido').not().isEmpty(),
     check('Estado', 'El estado tiene que ser valido').isInt()
 ], async (req, res) => {

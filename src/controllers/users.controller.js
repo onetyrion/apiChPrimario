@@ -4,7 +4,7 @@ const { validExist } = require("./Helpers");
 
 //POST Create User
 const CreatingUser = async(req,res)=>{
-    const { Rut,Nombre,Apellidos,Correo_electronico,Estado,Cargo } = req.body;
+    const { Rut,Nombre,Apellidos,Correo_electronico,Estado,Cargo,Id_empresa } = req.body;
     try {
         //VALID RUT ON TABLE USERS
         const rutUsers = await users.findAll({ where:{ Rut:Rut }});
@@ -19,7 +19,8 @@ const CreatingUser = async(req,res)=>{
             Apellidos,
             Correo_electronico,
             Estado,
-            Cargo
+            Cargo,
+            Id_empresa
         });
         if (newUser) {
             return res.json({

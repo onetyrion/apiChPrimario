@@ -11,7 +11,7 @@ fallaRoute.post('/', [
     check('Id_categoria', 'La id de la matención es Obligatoria').isInt(),
     check('Id_tipo', 'La id de la falla es obligatoria').isInt(),
     check('Descripcion_causa', 'La id de la falla es obligatoria').not().isEmpty(),
-    check('Falla', 'La id de la falla es obligatoria').isInt(),
+    check('Falla', 'La id de la falla es obligatoria').not().isEmpty()
 ], async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

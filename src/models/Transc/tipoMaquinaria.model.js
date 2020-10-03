@@ -1,14 +1,15 @@
 module.exports = (sequelize,type) =>{
-    return sequelize.define("KPI",{
-        Id_kpi:{
+    return sequelize.define("Tipo_Maquinaria",{
+        Id_Tipo:{
             type:type.INTEGER,
             autoIncrement: true,
             primaryKey:true
         },
-        Nombre_kpi:{
+        Descripcion:{
             type:type.STRING
         }
     },{
-        freezeTableName: true
+        freezeTableName: true,
+        timestamps: false
     })
 }

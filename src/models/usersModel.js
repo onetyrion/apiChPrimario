@@ -1,9 +1,5 @@
-// const { Sequelize, DataTypes } = require('sequelize');
-// import { sequelize } from '../database/database';
-// import Router from '../routes/usersRoute';
-
 module.exports = (sequelize,type) =>{
-    return sequelize.define("[Usuario]",{
+    return sequelize.define("Usuario",{
         Rut:{
             type:type.STRING,
             primaryKey:true
@@ -22,30 +18,16 @@ module.exports = (sequelize,type) =>{
         },
         Cargo:{
             type:type.STRING,
-        }
+        },
+        Id_empresa:{
+            type:type.INTEGER,
+            references: {
+                model: 'Empresa',
+                key: 'Id_empresa'
+            }
+        },
     },{
-        freezeTableName: true
+        freezeTableName: true,
+        timestamps: false
     })
 }
-// const userModel = sequelize.define('usuario',{
-//     Rut:{
-//         type:DataTypes.STRING,
-//         primaryKey:true
-//     },
-//     Nombre:{
-//         type:DataTypes.STRING,
-//     },
-//     Apellidos:{
-//         type:DataTypes.STRING,
-//     },
-//     Correo_electronico:{
-//         type:DataTypes.STRING,
-//     },
-//     Estado:{
-//         type:DataTypes.BOOLEAN,
-//     },
-//     Cargo:{
-//         type:DataTypes.STRING,
-//     }
-// })
-// export default userModel;

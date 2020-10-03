@@ -1,5 +1,5 @@
 
-const { users, login } = require("../database/database");
+const { users } = require("../database/database");
 const { validExist } = require("./Helpers");
 
 //POST Create User
@@ -52,11 +52,12 @@ const ListUsers = async(req,res)=>{
 }
 //PUT UPDATE Users
 const UpdateUser = async(req,res)=>{
+    const Rut = req.params.userRUT;
     try {
-        const Rut = req.params.userRUT;
+
         const errors = []
-        const usersResult = await validExist("users",Rut,"Rut");
-        usersResult != null ? errors.push(usersResult) : null;
+        const usersResult = await validExist("users",Rut,"Rut","NOTEXIST");
+        usersResult != null && errors.push(usersResult);
         if (errors.length>0) {
             return res.status(422).json({errors});
         }
@@ -80,11 +81,11 @@ const DeleteUser = async(req,res)=>{
         const Rut = req.params.userRUT;
 
         const errors = []
-        const loginResult = await validExist("login",Rut,"Rut");
-        const usersResult = await validExist("users",Rut,"Rut");
+        const loginResult = await validExist("login",Rut,"Rut","EXIST");
+        const usersResult = await validExist("users",Rut,"Rut","NOTEXIST");
 
-        loginResult != null ? errors.push(loginResult) : null;
-        usersResult != null ? errors.push(usersResult) : null;
+        loginResult != null && errors.push(loginResult);
+        usersResult != null && errors.push(usersResult);
         
         if (errors.length>0) {
             return res.status(422).json({errors});

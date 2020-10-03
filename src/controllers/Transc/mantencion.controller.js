@@ -8,13 +8,13 @@ const creatingMantencion = async(req,res)=>{
     try {
 
         const errors = []
-        const componentResult = await validExist("componente",Id_componente,"Id_componente");
-        const tipoMantencionResult = await validExist("tipoMantencion",Id_tipo,"Id_tipo");
-        const eventoResult = await validExist("evento",Id_evento,"Id_evento");
+        const componentResult = await validExist("componente",Id_componente,"Id_componente","NOTEXIST");
+        const tipoMantencionResult = await validExist("tipoMantencion",Id_tipo,"Id_tipo","NOTEXIST");
+        const eventoResult = await validExist("evento",Id_evento,"Id_evento","NOTEXIST");
 
-        componentResult != null ? errors.push(componentResult) : null;
-        tipoMantencionResult != null ? errors.push(tipoMantencionResult) : null;
-        eventoResult != null ? errors.push(eventoResult) : null;
+        componentResult != null && errors.push(componentResult);
+        tipoMantencionResult != null && errors.push(tipoMantencionResult);
+        eventoResult != null && errors.push(eventoResult);
 
         if (errors.length>0) {
             return res.status(422).json({errors});
@@ -71,15 +71,15 @@ const UpdateMantencion = async(req,res)=>{
 
     try {  
         const errors = []
-        const mantencionResult = await validExist("mantencion",id_mantencion,"id_mantencion");
-        const componentResult = await validExist("componente",Id_componente,"Id_componente");
-        const tipoMantencionResult = await validExist("tipoMantencion",Id_tipo,"Id_tipo");
-        const eventoResult = await validExist("evento",Id_evento,"Id_evento");
+        const mantencionResult = await validExist("mantencion",id_mantencion,"id_mantencion","NOTEXIST");
+        const componentResult = await validExist("componente",Id_componente,"Id_componente","NOTEXIST");
+        const tipoMantencionResult = await validExist("tipoMantencion",Id_tipo,"Id_tipo","NOTEXIST");
+        const eventoResult = await validExist("evento",Id_evento,"Id_evento","NOTEXIST");
 
-        mantencionResult != null ? errors.push(mantencionResult) : null;
-        componentResult != null ? errors.push(componentResult) : null;
-        tipoMantencionResult != null ? errors.push(tipoMantencionResult) : null;
-        eventoResult != null ? errors.push(eventoResult) : null;
+        mantencionResult != null && errors.push(mantencionResult);
+        componentResult != null && errors.push(componentResult);
+        tipoMantencionResult != null && errors.push(tipoMantencionResult);
+        eventoResult != null && errors.push(eventoResult);
 
         if (errors.length>0) {
             return res.status(422).json({errors});
@@ -106,9 +106,9 @@ const DeleteMantencion = async(req,res)=>{
     const id_mantencion = req.params.Id_mantencion;
     try {
         const errors = []
-        const mantencionResult = await validExist("mantencion",id_mantencion,"id_mantencion"); 
+        const mantencionResult = await validExist("mantencion",id_mantencion,"id_mantencion","NOTEXIST"); 
 
-        mantencionResult != null ? errors.push(mantencionResult) : null; 
+        mantencionResult != null && errors.push(mantencionResult); 
 
         if (errors.length>0) {
             return res.status(422).json({errors});

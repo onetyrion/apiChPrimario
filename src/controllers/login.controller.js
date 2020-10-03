@@ -1,5 +1,5 @@
 
-const { login,users, rol } = require("../database/database");
+const { login } = require("../database/database");
 const bcrypt = require('bcryptjs');
 const { validExist } = require("./Helpers");
 
@@ -10,13 +10,13 @@ const CreatingUser = async(req,res)=>{
     try {
         
         const errors = []
-        const loginResult = await validExist("login",Rut,"Rut");
-        const usersResult = await validExist("users",Rut,"Rut");
-        const rolResult = await validExist("rol",Id_rol,"Id_rol");
+        const loginResult = await validExist("login",Rut,"Rut","EXIST");
+        const usersResult = await validExist("users",Rut,"Rut","NOTEXIST");
+        const rolResult = await validExist("rol",Id_rol,"Id_rol","NOTEXIST");
 
-        loginResult != null ? errors.push(loginResult) : null;
-        usersResult != null ? errors.push(usersResult) : null;
-        rolResult != null ? errors.push(rolResult) : null;
+        loginResult != null && errors.push(loginResult);
+        usersResult != null && errors.push(usersResult);
+        rolResult != null && errors.push(rolResult);
         
         if (errors.length>0) {
             return res.status(422).json({errors});
@@ -60,8 +60,10 @@ const UpdateUser = async(req,res)=>{
     const Rut = req.params.userRUT;
     try {
         const errors = []
-        const usersResult = await validExist("users",Rut,"Rut");
-        usersResult != null ? errors.push(usersResult) : null;
+        const usersResult = await validExist("users",Rut,"Rut","NOTEXIST");
+        const loginResult = await validExist("login",Rut,"Rut","NOTEXIST");
+        usersResult != null && errors.push(usersResult);
+        loginResult != null && errors.push(loginResult);
         if (errors.length>0) {
             return res.status(422).json({errors});
         }

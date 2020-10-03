@@ -39,7 +39,7 @@ const validateTypes = (x,type,cant) => {
         return;
     }
 
-const validExist = async(tabla,valor,campo) => {
+const validExist = async(tabla,valor,campo,logic) => {
     var item = [];
     item = (tabla === "users") ? await users.findAll({ where:{ [campo]:valor }}) : [...item];
     item = (tabla === "login") ? await login.findAll({ where:{ [campo]:valor }}) : [...item];
@@ -54,19 +54,19 @@ const validExist = async(tabla,valor,campo) => {
     item = (tabla === "tipoFalla") ? await tipoFalla.findAll({ where:{ [campo]:valor }}) : [...item];
     item = (tabla === "falla") ? await falla.findAll({ where:{ [campo]:valor }}) : [...item];
     item = (tabla === "maquinaria") ? await maquinaria.findAll({ where:{ [campo]:valor }}) : [...item];
-    item = (tabla === "reporteKPI") ? await reporteKPI.findAll({ where:{ [campo]:valor }}) : [...item];
     item = (tabla === "kpi") ? await kpi.findAll({ where:{ [campo]:valor }}) : [...item];
     item = (tabla === "programaMantencion") ? await programaMantencion.findAll({ where:{ [campo]:valor }}) : [...item];
     item = (tabla === "tipoMantencion") ? await tipoMantencion.findAll({ where:{ [campo]:valor }}) : [...item];
     item = (tabla === "fallaComponente") ? await fallaComponente.findAll({ where:{ [campo]:valor }}) : [...item];
     item = (tabla === "tipoMaquinaria") ? await tipoMaquinaria.findAll({ where:{ [campo]:valor }}) : [...item];
+    // item = (tabla === "reporteKPI") ? await reporteKPI.findAll({ where:{ [campo]:valor }}) : [...item];
     
     console.log(tabla+" "+item.length);
-    if (item.length === 0 && (tabla !== "login" && tabla !== "fallaMantencion")) {
-        return {error : "No está registrado",body:campo};
-    }
-    if ((tabla === "login" && item.length > 0) || (tabla === "fallaMantencion" && item.length > 0)) { //para no duplicar rut en la DB o llaves foraneas
+    if ( logic === "EXIST" && item.length > 0) { //para no duplicar rut en la DB o llaves foraneas
         return {error : "ya está registrado",body:campo};
+    }
+    if ( logic === "NOTEXIST" && item.length === 0) { //para no duplicar rut en la DB o llaves foraneas
+        return {error : "No está registrado",body:campo};
     }
     return;
 }

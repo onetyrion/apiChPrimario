@@ -13,6 +13,7 @@ const fallaRoute = require('./Transc/fallaRoute');
 const reporteKPIRoute = require('./Transc/reporteKPIRoute');
 const maquinariaRoute = require('./Transc/maquinariaRoute');
 const vauthRoute = require('./vauthRoute');
+const fallaComponenteRoute = require('./Transc/fallaComponenteRoute')
 
 //Routers BASE
 router.use('/auth', authRoute);
@@ -23,6 +24,7 @@ router.use('/vauth', middleware.checkToken, vauthRoute);
 
 //Routers TRANSC
 router.use('/components',middleware.checkToken,componentRoute);
+router.use('/fallacomponente',middleware.checkToken,fallaComponenteRoute);
 router.use('/mantencion',middleware.checkToken,mantencionRoute);
 router.use('/fallamantencion',middleware.checkToken,fallamantencionRoute);
 router.use('/falla',middleware.checkToken,fallaRoute);

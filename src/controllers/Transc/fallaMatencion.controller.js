@@ -1,29 +1,24 @@
 
 const { fallaMantencion, mantencion, falla } = require("../../database/database");
+const { validExist } = require("../Helpers");
 
 //POST Create 
 const creatingfallaMantencion = async(req,res)=>{
     const { Id_mantencion,Id_falla } = req.body;
 
-    //VALID ID_MANTENCION
-    const IdMantencion = await mantencion.findAll({
-        attributes: ['Id_mantencion'],
-        where:{
-            Id_mantencion:Id_mantencion
-        }
-    });
-    if (typeof IdMantencion[0] == 'undefined') {
-        return res.status(422).json({errores : "El id ingresado no esta registrado"})
-    }
-    //VALID ID_FALLA
-    const IdFalla = await falla.findAll({
-        attributes: ['Id_falla'], where:{Id_falla:Id_falla}
-    });
-    if (typeof IdFalla[0] == 'undefined') {
-        return res.status(422).json({errores : "El id ingresado no esta registrado"})
-    }
     
     try {
+        const errors = []
+        //VALID ID_MANTENCION
+        const mantencionResult = await validExist("mantencion",Id_mantencion,"id_mantencion","NOTEXIST"); 
+        const fallaResult = await validExist("falla",Id_falla,"Id_falla","NOTEXIST");
+
+        mantencionResult != null && errors.push(mantencionResult); 
+        fallaResult != null && errors.push(fallaResult);
+
+        if (errors.length>0) {
+            return res.status(422).json({errors});
+        }
 
         let newfallaMantencion = await fallaMantencion.create({
             Id_mantencion,
@@ -62,34 +57,19 @@ const updateFallaMantencion = async(req,res)=>{
     const Id_FallaMantencion = req.params.Id_FallaMantencion;
     const Id_mantencion = req.body.Id_mantencion;
     const Id_falla = req.body.Id_falla;
-    //console.log(req)
     try {
         //VALID ID_FALLAMANTENCION
-        const IdfallaMantencion = await fallaMantencion.findAll({
-            attributes: ['Id_FallaMantencion'],
-            where:{
-                Id_FallaMantencion:Id_FallaMantencion
-            }
-        });
-        if (typeof IdfallaMantencion[0] == 'undefined') {
-            return res.status(422).json({errores : "El id ingresado no esta registrado"})
-        }
-        //VALID ID_MANTENCION
-        const IdMantencion = await mantencion.findAll({
-            attributes: ['Id_mantencion'],
-            where:{
-                Id_mantencion:Id_mantencion
-            }
-        });
-        if (typeof IdMantencion[0] == 'undefined') {
-            return res.status(422).json({errores : "El id ingresado no esta registrado"})
-        }
-        //VALID ID_FALLA
-        const IdFalla = await falla.findAll({
-            attributes: ['Id_falla'], where:{Id_falla:Id_falla}
-        });
-        if (typeof IdFalla[0] == 'undefined') {
-            return res.status(422).json({errores : "El id ingresado no esta registrado"})
+        const errors = []
+        const fallaMantencionResult = await validExist("fallaMantencion",Id_FallaMantencion,"Id_fallaMantencion","NOTEXIST"); 
+        const mantencionResult = await validExist("mantencion",Id_mantencion,"id_mantencion","NOTEXIST"); 
+        const fallaResult = await validExist("falla",Id_falla,"Id_falla","NOTEXIST");
+
+        fallaMantencionResult != null && errors.push(fallaMantencionResult); 
+        mantencionResult != null && errors.push(mantencionResult); 
+        fallaResult != null && errors.push(fallaResult);
+
+        if (errors.length>0) {
+            return res.status(422).json({errors});
         }
 
         //UPDATE
@@ -115,14 +95,13 @@ const deleteFallaMantencion = async(req,res)=>{
     const Id_FallaMantencion = req.params.Id_FallaMantencion;
     try {
         //VALID ID_FALLAMANTENCION
-        const IdfallaMantencion = await fallaMantencion.findAll({
-            attributes: ['Id_FallaMantencion'],
-            where:{
-                Id_FallaMantencion:Id_FallaMantencion
-            }
-        });
-        if (typeof IdfallaMantencion[0] == 'undefined') {
-            return res.status(422).json({errores : "El id ingresado no esta registrado"})
+        const errors = []
+        const fallaMantencionResult = await validExist("fallaMantencion",Id_FallaMantencion,"Id_fallaMantencion","NOTEXIST");
+
+        fallaMantencionResult != null && errors.push(fallaMantencionResult); 
+
+        if (errors.length>0) {
+            return res.status(422).json({errors});
         }
         
         await fallaMantencion.destroy({

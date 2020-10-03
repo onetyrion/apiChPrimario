@@ -7,15 +7,15 @@ const CreatingMaquinaria = async(req,res)=>{
     const { Id_area,Id_tipo,Nombre_maquinaria,Estado } = req.body;
     try {
         const errors = [];
-        const areaResult = await validExist("areaProductiva",Id_area,"Id_area");
-        const tipoResult = await validExist("tipoMaquinaria",Id_tipo,"Id_tipo");
+        const areaResult = await validExist("areaProductiva",Id_area,"Id_area","NOTEXIST");
+        const tipoResult = await validExist("tipoMaquinaria",Id_tipo,"Id_tipo","NOTEXIST");
         const EstadoResult = validateTypes(Estado,"boolean",1);
         const nombreResult = validateTypes(Nombre_maquinaria,"string",150);
 
-        areaResult != null ? errors.push(areaResult) : null;
-        tipoResult != null ? errors.push(tipoResult) : null;
-        EstadoResult != null ? errors.push(EstadoResult) : null;
-        nombreResult != null ? errors.push(nombreResult) : null;
+        areaResult != null && errors.push(areaResult);
+        tipoResult != null && errors.push(tipoResult);
+        EstadoResult != null && errors.push(EstadoResult);
+        nombreResult != null && errors.push(nombreResult);
 
         if (errors.length>0) {
             return res.status(422).json({errors});
@@ -62,17 +62,17 @@ const UpdateMaquinaria = async(req,res)=>{
     const errors = [];
     try {
         //VALIDATION
-        const areaResult = await validExist("areaProductiva",Id_area,"Id_area");
-        const tipoResult = await validExist("tipoMaquinaria",Id_tipo,"Id_tipo");
-        const maquinariaResult = await validExist("maquinaria",Id_maquinaria,"Id_maquinaria");
+        const areaResult = await validExist("areaProductiva",Id_area,"Id_area","NOTEXIST");
+        const tipoResult = await validExist("tipoMaquinaria",Id_tipo,"Id_tipo","NOTEXIST");
+        const maquinariaResult = await validExist("maquinaria",Id_maquinaria,"Id_maquinaria","NOTEXIST");
         const EstadoResult = validateTypes(Estado,"boolean",1);
         const nombreResult = validateTypes(Nombre_maquinaria,"string",150);
 
-        areaResult != null ? errors.push(areaResult) : null;
-        tipoResult != null ? errors.push(tipoResult) : null;
-        EstadoResult != null ? errors.push(EstadoResult) : null;
-        nombreResult != null ? errors.push(nombreResult) : null;
-        maquinariaResult != null ? errors.push(maquinariaResult) : null;
+        areaResult != null && errors.push(areaResult);
+        tipoResult != null && errors.push(tipoResult);
+        EstadoResult != null && errors.push(EstadoResult);
+        nombreResult != null && errors.push(nombreResult);
+        maquinariaResult != null && errors.push(maquinariaResult);
 
         if (errors.length>0) {
             return res.status(422).json({errors});
@@ -101,8 +101,8 @@ const DeleteMaquinaria = async(req,res)=>{
         
         // VALIDATION
         const errors = [];
-        const maquinariaResult = await validExist("maquinaria",Id_maquinaria,"Id_maquinaria");
-        maquinariaResult != null ? errors.push(maquinariaResult) : null;
+        const maquinariaResult = await validExist("maquinaria",Id_maquinaria,"Id_maquinaria","NOTEXIST");
+        maquinariaResult != null && errors.push(maquinariaResult);
         if (errors.length>0) {
             return res.status(422).json({errors});
         }

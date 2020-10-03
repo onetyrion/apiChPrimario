@@ -1,15 +1,16 @@
 
-const { users, login, componente,maquinaria } = require("../database/database");
-const { validExist } = require("./Helpers");
+const { componente } = require("../database/database");
+const { validExist,validateTypes } = require("./Helpers");
 
 //POST Create Component
 const CreatingComponent = async(req,res)=>{
     const { Denominacion,Id_maquinaria,Estado } = req.body;
     try {
         const errors = [];
-        const maquinariaResult = await validExist("maquinaria",Id_maquinaria,"Id_maquinaria");
-
-        maquinariaResult != null ? errors.push(maquinariaResult) : null;
+        const maquinariaResult = await validExist("maquinaria",Id_maquinaria,"Id_maquinaria","NOTEXIST");
+        const estadoResult = validateTypes(Estado,"boolean");
+        maquinariaResult != null && errors.push(maquinariaResult);
+        estadoResult != null && errors.push(estadoResult);
 
         if (errors.length>0) {
             return res.status(422).json({errors});
@@ -55,10 +56,10 @@ const UpdateComponente = async(req,res)=>{
     try {
         //VALIDATION
         const errors = [];
-        const maquinariaResult = await validExist("maquinaria",Id_maquinaria,"Id_maquinaria");
-        const componentResult = await validExist("componente",Id_componente,"Id_componente");
-        maquinariaResult != null ? errors.push(maquinariaResult) : null;
-        componentResult != null ? errors.push(componentResult) : null;
+        const maquinariaResult = await validExist("maquinaria",Id_maquinaria,"Id_maquinaria","NOTEXIST");
+        const componentResult = await validExist("componente",Id_componente,"Id_componente","NOTEXIST");
+        maquinariaResult != null && errors.push(maquinariaResult);
+        componentResult != null && errors.push(componentResult);
         if (errors.length>0) {
             return res.status(422).json({errors});
         }
@@ -85,8 +86,9 @@ const DeleteComponent = async(req,res)=>{
         const Id_componente = req.params.Id_componente; 
         // VALIDATION
         const errors = [];
-        const componentResult = await validExist("componente",Id_componente,"Id_componente");
-        componentResult != null ? errors.push(componentResult) : null;
+        const componentResult = await validExist("componente",Id_componente,"Id_componente","NOTEXIST");
+        componentResult != null && errors.push(componentResult);
+        
         if (errors.length>0) {
             return res.status(422).json({errors});
         }

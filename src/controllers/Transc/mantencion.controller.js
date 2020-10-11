@@ -7,19 +7,6 @@ const creatingMantencion = async(req,res)=>{
     const { Id_componente,Id_evento,Id_tipo,Fecha_mantencion,Cant_Evento_especial,Duracion,Descripcion,Horas_programadas,Horas_no_programadas,Cantidad_evProgramados,Cantidad_evNoProgramados,RFCA,Area,OT } = req.body;
     try {
 
-        const errors = []
-        const componentResult = await validExist("componente",Id_componente,"Id_componente","NOTEXIST");
-        const tipoMantencionResult = await validExist("tipoMantencion",Id_tipo,"Id_tipo","NOTEXIST");
-        const eventoResult = await validExist("evento",Id_evento,"Id_evento","NOTEXIST");
-
-        componentResult != null && errors.push(componentResult);
-        tipoMantencionResult != null && errors.push(tipoMantencionResult);
-        eventoResult != null && errors.push(eventoResult);
-
-        if (errors.length>0) {
-            return res.status(422).json({errors});
-        }
-
         let newMantencion = await mantencion.create({
             Id_componente,
             Id_evento,
@@ -37,10 +24,7 @@ const creatingMantencion = async(req,res)=>{
             OT
         });
         if (newMantencion) {
-            return res.json({
-                message:'Mantencion Created Successfully',
-                data:newMantencion
-            })
+            return newMantencion;
         }
     } catch (error) {
         console.log(error);

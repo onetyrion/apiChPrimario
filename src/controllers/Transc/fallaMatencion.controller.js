@@ -4,31 +4,15 @@ const { validExist } = require("../Helpers");
 
 //POST Create 
 const creatingfallaMantencion = async(req,res)=>{
-    const { Id_mantencion,Id_falla } = req.body;
-
-    
+    const { Id_mantencion,Id_falla } = req;
     try {
-        const errors = []
-        //VALID ID_MANTENCION
-        const mantencionResult = await validExist("mantencion",Id_mantencion,"id_mantencion","NOTEXIST"); 
-        const fallaResult = await validExist("falla",Id_falla,"Id_falla","NOTEXIST");
-
-        mantencionResult != null && errors.push(mantencionResult); 
-        fallaResult != null && errors.push(fallaResult);
-
-        if (errors.length>0) {
-            return res.status(422).json({errors});
-        }
 
         let newfallaMantencion = await fallaMantencion.create({
             Id_mantencion,
             Id_falla,
         });
         if (newfallaMantencion) {
-            return res.json({
-                message:'Falla Mantencion Created Successfully',
-                data:newfallaMantencion
-            })
+            return newfallaMantencion;
         }
     } catch (error) {
         console.log(error);

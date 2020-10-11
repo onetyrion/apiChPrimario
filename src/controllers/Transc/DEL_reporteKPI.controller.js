@@ -1,5 +1,5 @@
 
-const { reporteKPI,maquinaria,kpi } = require("../../database/database");
+const { reporteKPI } = require("../../database/database");
 const { validExist } = require("../Helpers");
 
 //POST Create 

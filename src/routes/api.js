@@ -11,9 +11,11 @@ const fallamantencionRoute = require('./Transc/fallaMantencionRoute');
 const fallaRoute = require('./Transc/fallaRoute');
 const maquinariaRoute = require('./Transc/maquinariaRoute');
 const vauthRoute = require('./vauthRoute');
-const fallaComponenteRoute = require('./Transc/fallaComponenteRoute')
-const rMantencion = require('./Transc/formMantenciones');
-// const reporteKPIRoute = require('./Transc/reporteKPIRoute');
+const fallaComponenteRoute = require('./Transc/fallaComponenteRoute');
+const fMantencion = require('./Transc/formMantenciones');
+const fUsuario = require('./Transc/formUsuarios');
+const areaProductiva = require('./Transc/areaProductivaRoute');
+const tipoMaquinariaRoute = require('./Transc/tipoMaquinariaRoute');
 
 //Routers BASE
 router.use('/auth', authRoute);
@@ -29,7 +31,10 @@ router.use('/mantencion',middleware.checkToken,mantencionRoute);
 router.use('/fallamantencion',middleware.checkToken,fallamantencionRoute);
 router.use('/falla',middleware.checkToken,fallaRoute);
 router.use('/maquinaria',middleware.checkToken,maquinariaRoute);
-router.use('/registrarmantencion',middleware.checkToken,rMantencion);
+router.use('/areaProductiva',middleware.checkToken,fUsuario);
+router.use('/registrarmantencion',middleware.checkToken,fMantencion);
+router.use('/areaProductiva',middleware.checkToken,areaProductiva);
+router.use('/tipoMaquinaria',middleware.checkToken,tipoMaquinariaRoute);
 
 
 module.exports = router;

@@ -10,10 +10,10 @@ module.exports = (sequelize,type) =>{
         },
         Id_maquinaria:{
             type:type.INTEGER,
-            references: {
-                model: 'Maquinaria',
-                key: 'Id_maquinaria'
-            }
+            // references: {
+            //     model: 'Maquinaria',
+            //     key: 'Id_maquinaria'
+            // }
         },
         Estado:{
             type:type.BOOLEAN,

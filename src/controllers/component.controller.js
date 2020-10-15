@@ -1,5 +1,5 @@
 
-const { componente } = require("../database/database");
+const { componente,maquinaria } = require("../database/database");
 const { validExist,validateTypes } = require("./Helpers");
 
 //POST Create Component
@@ -39,7 +39,22 @@ const CreatingComponent = async(req,res)=>{
 //Get List Component
 const ListComponent = async(req,res)=>{
     try {
-        const ComponentesList = await componente.findAll();
+        // const ComponentesList = await componente.findAll();
+        const ComponentesList = await componente.findAll({ 
+            // attributes:{exclude:'Id_maquinaria'},
+            include: {model:maquinaria,attributes:['Nombre_maquinaria']}})
+            for (const k in ComponentesList) {
+                if (ComponentesList[k].dataValues.Id_maquinaria == null) {
+                    // ComponentesList[k].dataValues.Id_maquinaria = 0;
+                    // ComponentesList[k].dataValues.Maquinarium.Nombre_maquinaria = "No existe";
+                    console.log(ComponentesList[k])
+                }
+            }
+        // ComponentesList.dataValues.forEach(element => {
+        //     if (Id_maquinaria) {
+                
+        //     }
+        // });
         res.json(ComponentesList);
     } catch (error) {
         console.log(error);
@@ -77,9 +92,9 @@ const UpdateComponente = async(req,res)=>{
        })         
     }
 }
-//DELETE User
+//DELETE COMPONENT
 const DeleteComponent = async(req,res)=>{
-    if (Number.isInteger(req.params.Id_componente)) {
+    if (Number.isInteger(req.params.Id_component)) {
         return res.status(422).json({errores : "El id del componente no es valido"})
     }
     try {

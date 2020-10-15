@@ -61,7 +61,7 @@ const validExist = async(tabla,valor,campo,logic) => {
     item = (tabla === "tipoMaquinaria") ? await tipoMaquinaria.findAll({ where:{ [campo]:valor }}) : [...item];
     // item = (tabla === "reporteKPI") ? await reporteKPI.findAll({ where:{ [campo]:valor }}) : [...item];
     
-    console.log(tabla+" "+item.length);
+    // console.log(tabla+" "+item.length);
     if ( logic === "EXIST" && item.length > 0) { //para no duplicar rut en la DB o llaves foraneas
         return {error : "ya está registrado",body:campo};
     }

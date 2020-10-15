@@ -11,17 +11,17 @@ const checkToken = (req, res, next) => {
     let payload = {};
     try {
         payload = jwtsimple.decode(userToken,tokenWord);
-        console.log(payload);
+        // console.log(payload);
     } catch (error) {
         return res.json({ error: "El token es invalido",userToken});
     }
     //Verificacion de Expiracion del token 5min
-    console.log(payload.expiredAt+"\n"+moment().unix());
+    
     if(payload.expiredAt < moment().unix()){
         return res.json({ error: "El token ha expirado"});
     }
 
-    req.userId=payload.userid;
+    req.user={userId:payload.userid,rol:payload.rol};
     next();
 }
 

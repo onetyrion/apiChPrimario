@@ -91,10 +91,11 @@ const UpdateMaquinaria = async(req,res)=>{
        })         
     }
 }
-//DELETE User
+//DELETE MAQUINARIA
 const DeleteMaquinaria = async(req,res)=>{
-    if (isNaN(Number(req.params.Id_maquinaria))) {
-        return res.status(422).json({error: "La ID ingresada no es válida",campo:req.params.Id_maquinaria})
+    console.log(req.params.Id_maquinaria==='0')
+    if (isNaN(Number(req.params.Id_maquinaria)) || req.params.Id_maquinaria==='0') {
+        return res.status(422).json({errors: "La ID ingresada no es válida",campo:req.params.Id_maquinaria})
     }
     try {
         const Id_maquinaria = req.params.Id_maquinaria; 

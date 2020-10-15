@@ -28,11 +28,12 @@ usersRouter.post('/',[
     CreatingUser(req,res);
 }); 
 
+usersRouter.get('/:userRUT',ListUsers)
 usersRouter.get('/',ListUsers)
 
 usersRouter.put('/:userRUT',[
     //Check Parameters on Body
-    check('Rut','El Rut es Obligatorio').not().isEmpty(),
+    // check('Rut','El Rut es Obligatorio').not().isEmpty(),
     check('Nombre','El Nombre es Obligatorio').not().isEmpty(),
     check('Apellidos','Los Apellidos son Obligatorios').not().isEmpty(),
     check('Correo_electronico','El Email es Obligatorio').isEmail(),
@@ -43,6 +44,7 @@ usersRouter.put('/:userRUT',[
     //Check Errors
     const errors = validationResult(req);
     if(!errors.isEmpty()){
+        console.log(errors.array())
         return res.status(422).json({errores : errors.array()})
     }
     //Load Controller

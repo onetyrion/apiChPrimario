@@ -5,10 +5,14 @@ const { validExist } = require("./Helpers");
 
 //POST Create User
 const CreatingUser = async(req,res)=>{
-    req.body.Password=bcrypt.hashSync(req.body.Password,10);
+    // default password
+    if (req.body.Password) {
+        req.body.Password=bcrypt.hashSync(req.body.Password,10);
+    }else{
+        req.body.Password=bcrypt.hashSync("123456",10);
+    }
     const { Rut,Password,Id_rol } = req.body;
     try {
-        
         const errors = []
         const loginResult = await validExist("login",Rut,"Rut","EXIST");
         const usersResult = await validExist("users",Rut,"Rut","NOTEXIST");
@@ -25,13 +29,10 @@ const CreatingUser = async(req,res)=>{
         let newLoginUser = await login.create({
             Rut,
             Password,
-            Id_rol:req.body.Id_rol
+            Id_rol
         });
         if (newLoginUser) {
-            return res.json({
-                message:'User to Login Created Successfully',
-                data:newLoginUser
-            })
+            return newLoginUser;
         }
     } catch (error) {
         console.log(error);

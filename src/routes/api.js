@@ -16,6 +16,8 @@ const fMantencion = require('./Transc/formMantenciones');
 const fUsuario = require('./Transc/formUsuarios');
 const areaProductiva = require('./Transc/areaProductivaRoute');
 const tipoMaquinariaRoute = require('./Transc/tipoMaquinariaRoute');
+const categoria = require('./Transc/categoriaRoute');
+const tipoFalla = require('./Transc/tipoFallaRoute');
 
 //Routers BASE
 router.use('/auth', authRoute);
@@ -35,6 +37,8 @@ router.use('/areaProductiva',middleware.checkToken,fUsuario);
 router.use('/registrarmantencion',middleware.checkToken,fMantencion);
 router.use('/areaProductiva',middleware.checkToken,areaProductiva);
 router.use('/tipoMaquinaria',middleware.checkToken,tipoMaquinariaRoute);
+router.use('/categoria',middleware.checkToken,categoria);
+router.use('/tipofalla',middleware.checkToken,tipoFalla);
 
 
 module.exports = router;

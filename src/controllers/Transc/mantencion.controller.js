@@ -38,7 +38,10 @@ const creatingMantencion = async(req,res)=>{
 //Get List 
 const ListMantencion = async(req,res)=>{
     try {
-        const MantencionList = await mantencion.findAll();
+        // const MantencionList = await mantencion.findAll();
+        const MantencionList = await mantencion.findAll({
+            include:{model:fallaMantencion}
+        });
         res.json(MantencionList);
     } catch (error) {
         console.log(error);

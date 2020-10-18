@@ -7,10 +7,10 @@ module.exports = (sequelize,type) =>{
         },
         Id_mantencion:{
             type:type.INTEGER,
-            references: {
-                model: 'Mantencion',
-                key: 'Id_mantencion'
-            }
+            // references: {
+            //     model: 'Mantencion',
+            //     key: 'Id_mantencion'
+            // }
         },
         Id_falla:{
             type:type.INTEGER,

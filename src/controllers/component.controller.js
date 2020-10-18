@@ -39,9 +39,7 @@ const CreatingComponent = async(req,res)=>{
 //Get List Component
 const ListComponent = async(req,res)=>{
     try {
-        // const ComponentesList = await componente.findAll();
         const ComponentesList = await componente.findAll({ 
-            // attributes:{exclude:'Id_maquinaria'},
             include: {model:maquinaria,attributes:['Nombre_maquinaria']}})
             for (const k in ComponentesList) {
                 if (ComponentesList[k].dataValues.Id_maquinaria == null) {

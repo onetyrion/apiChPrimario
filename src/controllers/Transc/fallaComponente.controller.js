@@ -40,6 +40,11 @@ const creatingfallaComponente = async(req,res)=>{
 const listfallaComponente = async(req,res)=>{
     try {
         const fallaComponenteList = await fallaComponente.findAll();
+        // const fallaComponenteList = await fallaComponente.findAll({ 
+        //     include: {
+        //         model:falla
+                // attributes:['Id_falla,Id_categoria,Id_tipo']
+            // }})
         res.json(fallaComponenteList);
     } catch (error) {
         console.log(error);

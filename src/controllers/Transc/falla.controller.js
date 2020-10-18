@@ -1,5 +1,5 @@
 
-const { falla } = require("../../database/database");
+const { falla, fallaComponente } = require("../../database/database");
 const { validExist, validateTypes } = require("../Helpers");
 
 //POST Create 
@@ -44,7 +44,10 @@ const creatingFalla = async(req,res)=>{
 //Get List 
 const listFalla = async(req,res)=>{
     try {
-        const fallaList = await falla.findAll();
+        //ID	Falla	Componente	Categoría	Descripción	Tipo	Acción
+        // const fallaList = await falla.findAll();
+        const fallaList = await falla.findAll({ 
+            include: {model:fallaComponente}})
         res.json(fallaList);
     } catch (error) {
         console.log(error);

@@ -67,10 +67,12 @@ const empresa = empresaModel(sequelize,Sequelize);
 const tipoMaquinaria = tipoMaquinariaModel(sequelize,Sequelize);
 
 //RELATIONS
-// componente.hasMany(maquinaria,{ foreignKey:"Id_maquinaria" });
-// maquinaria.belongsTo(componente,{ foreignKey:"Id_maquinaria" });
 componente.belongsTo(maquinaria,{ foreignKey:"Id_maquinaria" });
 maquinaria.hasMany(componente,{ foreignKey:"Id_maquinaria" });
+fallaComponente.belongsTo(falla,{ foreignKey:"Id_falla" });
+falla.hasMany(fallaComponente,{ foreignKey:"Id_falla" }); 
+fallaMantencion.belongsTo(mantencion,{ foreignKey:"Id_mantencion" });
+mantencion.hasMany(fallaMantencion,{ foreignKey:"Id_mantencion" }); 
 
 sequelize.sync({
 		force: false

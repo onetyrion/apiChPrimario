@@ -1,4 +1,5 @@
 //Dependences
+import "@babel/polyfill";
 const express = require("express");
 const morgan = require("morgan");
 const { json } = require("body-parser");

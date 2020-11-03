@@ -23,8 +23,7 @@ const validateTypes = (x,type,cant) => {
             }
             break;
         case "number":
-            if (true) {
-                console.log(typeof Number(x));
+            if (!(Number.isInteger(Number(x)))) {
                 return{campo:x,error:" Debe ingresar un numero válido"};
             }
             break;

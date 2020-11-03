@@ -25,6 +25,7 @@ router.use('/users', middleware.checkToken, apiUserRoute);
 router.use('/login',middleware.checkToken, loginRoute);
 router.use('/vauth', middleware.checkToken, vauthRoute);
 // router.use('/dm', middleware.checkToken,factRouter);
+router.use('/registrarusuario',middleware.checkToken,fUsuario);
 
 //Routers TRANSC
 router.use('/components',middleware.checkToken,componentRoute);
@@ -33,7 +34,6 @@ router.use('/mantencion',middleware.checkToken,mantencionRoute);
 router.use('/fallamantencion',middleware.checkToken,fallamantencionRoute);
 router.use('/falla',middleware.checkToken,fallaRoute);
 router.use('/maquinaria',middleware.checkToken,maquinariaRoute);
-router.use('/areaProductiva',middleware.checkToken,fUsuario);
 router.use('/registrarmantencion',middleware.checkToken,fMantencion);
 router.use('/areaProductiva',middleware.checkToken,areaProductiva);
 router.use('/tipoMaquinaria',middleware.checkToken,tipoMaquinariaRoute);

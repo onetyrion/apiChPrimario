@@ -1,4 +1,3 @@
-
 const { fallaComponente, componente, falla } = require("../../database/database");
 const { validExist } = require("../Helpers");
 //POST Create 
@@ -19,13 +18,14 @@ const creatingfallaComponente = async(req,res)=>{
 
         let newfallaComponente = await fallaComponente.create({
             Id_componente,
-            Id_falla,
+            Id_falla
         });
         if (newfallaComponente) {
-            return res.json({
-                message:'Falla Componente Created Successfully',
-                data:newfallaComponente
-            })
+            return newfallaComponente;
+            // return res.json({
+            //     message:'Falla Componente Created Successfully',
+            //     data:newfallaComponente
+            // })
         }
     } catch (error) {
         console.log(error);
@@ -39,12 +39,12 @@ const creatingfallaComponente = async(req,res)=>{
 //Get List 
 const listfallaComponente = async(req,res)=>{
     try {
-        const fallaComponenteList = await fallaComponente.findAll();
-        // const fallaComponenteList = await fallaComponente.findAll({ 
-        //     include: {
-        //         model:falla
-                // attributes:['Id_falla,Id_categoria,Id_tipo']
-            // }})
+        // const fallaComponenteList = await fallaComponente.findAll();
+        const fallaComponenteList = await fallaComponente.findAll({ 
+            include: {
+                model:falla
+            }
+        })
         res.json(fallaComponenteList);
     } catch (error) {
         console.log(error);
@@ -56,30 +56,37 @@ const listfallaComponente = async(req,res)=>{
 }
 //PUT UPDATE 
 const updatefallaComponente = async(req,res)=>{
-    const Id_FallaComponente = req.params.Id_FallaComponente;
-    const Id_componente = req.body.Id_componente;
-    const Id_falla = req.body.Id_falla;
+    // const Id_FallaComponente = req.params.Id_FallaComponente;
     const errors = [] 
+    const { newId_componente } = req.body;
+    const { Id_falla,Id_componente} = req.params;
     //console.log(req)
     try {
-        //VALID Id_FallaComponente
-        const fallaComponenteResult = await validExist("fallaComponente",Id_FallaComponente,"Id_fallaComponente","NOTEXIST")
+        
         const componenteResult = await validExist("componente",Id_componente,"Id_componente","NOTEXIST");
+        const newcomponenteResult = await validExist("componente",newId_componente,"Id_componente","NOTEXIST");
         const fallaResult = await validExist("falla",Id_falla,"Id_falla","NOTEXIST");
-        fallaComponenteResult != null && errors.push(fallaComponenteResult);
+
+        newcomponenteResult != null && errors.push(newcomponenteResult);
         componenteResult != null && errors.push(componenteResult);
         fallaResult != null && errors.push(fallaResult);
     
         if (errors.length>0) {
             return res.status(422).json({errors});
         }
-
+        
         //UPDATE
-        await fallaComponente.update(req.body,{
-            where:{ Id_fallaComponente: Id_FallaComponente}
-        });
-        console.log("Falla Componente Modificada");
-        res.json({success:'Se ha modificado'});
+        const newFallaComponente = await fallaComponente.update({
+            Id_componente:newId_componente,
+            Id_falla
+        },
+            {where:{ Id_falla,Id_componente}}
+        );
+        if (newFallaComponente) {
+            console.log("Falla Componente Modificada");
+            return newFallaComponente;
+        }
+        // res.json({success:'Se ha modificado'});
     } catch (error) {
         console.log(error);
         return res.status(500),json({

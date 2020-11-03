@@ -17,7 +17,6 @@ usersRouter.post('/',[
     check('Estado','El estado es Obligatorio').not().isEmpty(),
     check('Cargo','El cargo es Obligatorio').not().isEmpty(),
     check('Id_empresa','La Empresa es Obligatoria').not().isEmpty()
-
 ],async (req,res) => {
     //Check Errors
     const errors = validationResult(req);

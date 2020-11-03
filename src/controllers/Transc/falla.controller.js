@@ -27,10 +27,11 @@ const creatingFalla = async(req,res)=>{
             Falla
         });
         if (newFalla) {
-            return res.json({
-                message:'Falla Mantencion Created Successfully',
-                data:newFalla
-            })
+            return newFalla;
+            // return res.json({
+            //     message:'Falla Mantencion Created Successfully',
+            //     data:newFalla
+            // })
         }
     } catch (error) {
         console.log(error);
@@ -59,17 +60,17 @@ const listFalla = async(req,res)=>{
 }
 //PUT UPDATE 
 const updateFalla = async(req,res)=>{
-    const { Id_categoria,Id_tipo } = req.body;
-    const Id_falla = req.params.Id_falla;
+    const { Id_categoria,Id_tipo,Descripcion_causa, } = req.body;
+    const { Id_falla } = req.params;
     const Falla = req.body.Falla;
-    //console.log(req)
+    
     try {
         const errors = []
 
         const fallaResult = await validExist("falla",Id_falla,"Id_falla","NOTEXIST");
         const categoriaResult = await validExist("categoria",Id_categoria,"Id_categoria","NOTEXIST");
         const tipoFallaResult = await validExist("tipoFalla",Id_tipo,"Id_tipo","NOTEXIST");
-        const fallaEstadoResult = await validateTypes(Falla,"boolean")
+        const fallaEstadoResult = await validateTypes(Falla,"boolean");
         
         fallaResult != null && errors.push(fallaResult);
         categoriaResult != null && errors.push(categoriaResult);
@@ -81,11 +82,17 @@ const updateFalla = async(req,res)=>{
         }
 
         //UPDATE
-        await falla.update(req.body,{
-            where:{ Id_falla: Id_falla}
-        });
-        console.log("Falla Modificada");
-        res.json({success:'Se ha modificado'});
+        const newFalla = await falla.update({
+            Id_categoria,
+            Id_tipo,
+            Descripcion_causa,
+            Falla
+        },{ where:{ Id_falla: Id_falla} });
+        if (newFalla) {
+            console.log(Id_falla);
+            return newFalla;
+        }
+        // res.json({success:'Se ha modificado'});
     } catch (error) {
         console.log(error);
         return res.status(500),json({

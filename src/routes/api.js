@@ -18,6 +18,9 @@ const areaProductiva = require('./Transc/areaProductivaRoute');
 const tipoMaquinariaRoute = require('./Transc/tipoMaquinariaRoute');
 const categoria = require('./Transc/categoriaRoute');
 const tipoFalla = require('./Transc/tipoFallaRoute');
+const indicadorRoute = require('./Transc/indicadorRoute');
+const eventoRoute = require('./Transc/eventoMantencionRoute');
+const tipoMantencionRoute = require('./Transc/tipoMantencionRoute');
 
 //Routers BASE
 router.use('/auth', authRoute);
@@ -35,10 +38,13 @@ router.use('/fallamantencion',middleware.checkToken,fallamantencionRoute);
 router.use('/falla',middleware.checkToken,fallaRoute);
 router.use('/maquinaria',middleware.checkToken,maquinariaRoute);
 router.use('/registrarmantencion',middleware.checkToken,fMantencion);
-router.use('/areaProductiva',middleware.checkToken,areaProductiva);
-router.use('/tipoMaquinaria',middleware.checkToken,tipoMaquinariaRoute);
+router.use('/areaproductiva',middleware.checkToken,areaProductiva);
+router.use('/tipomaquinaria',middleware.checkToken,tipoMaquinariaRoute);
 router.use('/categoria',middleware.checkToken,categoria);
 router.use('/tipofalla',middleware.checkToken,tipoFalla);
+router.use('/indicador',middleware.checkToken,indicadorRoute);
+router.use('/eventomantencion',middleware.checkToken,eventoRoute);
+router.use('/tipomantencion',middleware.checkToken,tipoMantencionRoute);// FALTA
 
 
 module.exports = router;

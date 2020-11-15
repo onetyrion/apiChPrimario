@@ -44,7 +44,7 @@ usersRouter.put('/:userRUT',[
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         console.log(errors.array())
-        return res.status(422).json({errores : errors.array()})
+        return res.status(422).json({errors : errors.array()})
     }
     //Load Controller
     UpdateUser(req,res);

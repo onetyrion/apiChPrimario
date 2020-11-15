@@ -31,7 +31,7 @@ loginRoute.put('/:userRUT', [
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
-            errores: errors.array()
+            errors: errors.array()
         })
     }
     UpdateUser(req, res);

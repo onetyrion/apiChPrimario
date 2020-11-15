@@ -19,7 +19,7 @@ module.exports = (sequelize,type) =>{
                 key: 'Id_kpi'
             }
         },
-        Year:{
+        Anio:{
             type:type.INTEGER
         },
         Meta:{

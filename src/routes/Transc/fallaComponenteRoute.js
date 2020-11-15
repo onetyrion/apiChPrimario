@@ -14,7 +14,7 @@ fallaComponenteRoute.post('/', [
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
-            errores: errors.array()
+            errors: errors.array()
         })
     }
     creatingfallaComponente(req, res);
@@ -29,7 +29,7 @@ fallaComponenteRoute.put('/:Id_FallaComponente', [
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
-            errores: errors.array()
+            errors: errors.array()
         })
     }
     updatefallaComponente(req, res);

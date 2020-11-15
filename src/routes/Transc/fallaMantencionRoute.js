@@ -14,7 +14,7 @@ fallamantencionRoute.post('/', [
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
-            errores: errors.array()
+            errors: errors.array()
         })
     }
     creatingfallaMantencion(req, res);
@@ -29,7 +29,7 @@ fallamantencionRoute.put('/:Id_FallaMantencion', [
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
-            errores: errors.array()
+            errors: errors.array()
         })
     }
     updateFallaMantencion(req, res);

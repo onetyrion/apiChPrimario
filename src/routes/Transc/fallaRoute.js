@@ -37,7 +37,7 @@ fallaRoute.put('/:Id_falla/:Id_componente', [
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
-            errores: errors.array()
+            errors: errors.array()
         })
     }
     updatefFallaC(req, res);

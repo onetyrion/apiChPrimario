@@ -38,17 +38,19 @@ const listFallaMatencion = async(req,res)=>{
 }
 //PUT UPDATE 
 const updateFallaMantencion = async(req,res)=>{
-    const Id_FallaMantencion = req.params.Id_FallaMantencion;
-    const Id_mantencion = req.body.Id_mantencion;
+    const errors = []
+    // const Id_FallaMantencion = req.params.Id_FallaMantencion;
+    const Id_mantencion = req.params.Id_mantencion;
     const Id_falla = req.body.Id_falla;
+    console.log("Id_mantencion");
+    console.log(Id_mantencion);
     try {
         //VALID ID_FALLAMANTENCION
-        const errors = []
-        const fallaMantencionResult = await validExist("fallaMantencion",Id_FallaMantencion,"Id_fallaMantencion","NOTEXIST"); 
+        // const fallaMantencionResult = await validExist("fallaMantencion",Id_FallaMantencion,"Id_fallaMantencion","NOTEXIST"); 
         const mantencionResult = await validExist("mantencion",Id_mantencion,"id_mantencion","NOTEXIST"); 
         const fallaResult = await validExist("falla",Id_falla,"Id_falla","NOTEXIST");
 
-        fallaMantencionResult != null && errors.push(fallaMantencionResult); 
+        // fallaMantencionResult != null && errors.push(fallaMantencionResult); 
         mantencionResult != null && errors.push(mantencionResult); 
         fallaResult != null && errors.push(fallaResult);
 
@@ -57,11 +59,14 @@ const updateFallaMantencion = async(req,res)=>{
         }
 
         //UPDATE
-        await fallaMantencion.update(req.body,{
-            where:{ Id_FallaMantencion: Id_FallaMantencion}
+        const newfallamantencion = await fallaMantencion.update({Id_falla},{
+            where:{ Id_mantencion}
         });
-        console.log("Falla Mantencion Modificada");
-        res.json({success:'Se ha modificado'});
+        if (newfallamantencion) {
+            console.log("Falla Mantencion Modificada");
+            return newfallamantencion;
+        }
+        // res.json({success:'Se ha modificado'});
     } catch (error) {
         console.log(error);
         return res.status(500),json({
@@ -71,28 +76,28 @@ const updateFallaMantencion = async(req,res)=>{
     }
 }
 //DELETE 
-const deleteFallaMantencion = async(req,res)=>{
-    if (Number.isInteger(req.params.Id_FallaMantencion)) {
-        return res.status(422).json({errores : "El id de la falla no es valido"})
-    }
+const deleteFallaMantencion = async(Id_mantencion,res)=>{
     
-    const Id_FallaMantencion = req.params.Id_FallaMantencion;
+    // const Id_FallaMantencion = req.params.Id_FallaMantencion;
     try {
         //VALID ID_FALLAMANTENCION
-        const errors = []
-        const fallaMantencionResult = await validExist("fallaMantencion",Id_FallaMantencion,"Id_fallaMantencion","NOTEXIST");
+        // const errors = []
+        // const fallaMantencionResult = await validExist("fallaMantencion",Id_FallaMantencion,"Id_fallaMantencion","NOTEXIST");
 
-        fallaMantencionResult != null && errors.push(fallaMantencionResult); 
+        // fallaMantencionResult != null && errors.push(fallaMantencionResult); 
 
-        if (errors.length>0) {
-            return res.status(422).json({errors});
-        }
+        // if (errors.length>0) {
+        //     return res.status(422).json({errors});
+        // }
         
-        await fallaMantencion.destroy({
-            where:{ Id_FallaMantencion: Id_FallaMantencion}
+        const deleteMantencion = await fallaMantencion.destroy({
+            where:{ Id_mantencion}
         });
-        console.log(`Falla Mantencion Eliminada ${Id_FallaMantencion}`);
-        res.json({success:'Se ha Eliminado'});
+        if (deleteMantencion) {
+            console.log(`Falla Mantencion Eliminada ${Id_mantencion}`);
+            return deleteMantencion;
+        }
+        // res.json({success:'Se ha Eliminado'});
     } catch (error) {
         console.log(error);
         return res.status(500),json({

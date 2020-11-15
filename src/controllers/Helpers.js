@@ -1,5 +1,5 @@
 //IMPORTS
-const { users, login, rol, areaProductiva, usuarioAreaProductiva, mantencion, fallaMantencion, evento, componente, categoria, tipoFalla, falla,	maquinaria,	reporteKPI,	kpi, programaMantencion, tipoMantencion, fallaComponente, tipoMaquinaria } = require("../database/database");
+const { users, login, rol, areaProductiva, usuarioAreaProductiva, mantencion, fallaMantencion, evento, componente, categoria, tipoFalla, falla,	maquinaria,	reporteKPI,	kpi, programaMantencion, tipoMantencion, fallaComponente, tipoMaquinaria, indicador } = require("../database/database");
 
 
 const trucatedecimal = (num, digits) => {
@@ -53,14 +53,14 @@ const validExist = async(tabla,valor,campo,logic) => {
     item = (tabla === "tipoFalla") ? await tipoFalla.findAll({ where:{ [campo]:valor }}) : [...item];
     item = (tabla === "falla") ? await falla.findAll({ where:{ [campo]:valor }}) : [...item];
     item = (tabla === "maquinaria") ? await maquinaria.findAll({ where:{ [campo]:valor }}) : [...item];
-    item = (tabla === "kpi") ? await kpi.findAll({ where:{ [campo]:valor }}) : [...item];
+    item = (tabla === "Indicador") ? await indicador.findAll({ where:{ [campo]:valor }}) : [...item];
     item = (tabla === "programaMantencion") ? await programaMantencion.findAll({ where:{ [campo]:valor }}) : [...item];
     item = (tabla === "tipoMantencion") ? await tipoMantencion.findAll({ where:{ [campo]:valor }}) : [...item];
     item = (tabla === "fallaComponente") ? await fallaComponente.findAll({ where:{ [campo]:valor }}) : [...item];
     item = (tabla === "tipoMaquinaria") ? await tipoMaquinaria.findAll({ where:{ [campo]:valor }}) : [...item];
     // item = (tabla === "reporteKPI") ? await reporteKPI.findAll({ where:{ [campo]:valor }}) : [...item];
     
-    // console.log(tabla+" "+item.length);
+    console.log(tabla+" "+item.length);
     if ( logic === "EXIST" && item.length > 0) { //para no duplicar rut en la DB o llaves foraneas
         return {error : "ya está registrado",body:campo};
     }

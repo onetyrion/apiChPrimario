@@ -16,7 +16,7 @@ maquinariaRoute.post('/', [
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
-            errores: errors.array()
+            errors: errors.array()
         })
     }
     CreatingMaquinaria(req, res);
@@ -33,7 +33,7 @@ maquinariaRoute.put('/:Id_maquinaria', [
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
-            errores: errors.array()
+            errors: errors.array()
         })
     }
     UpdateMaquinaria(req, res);

@@ -1,4 +1,3 @@
-
 const { mantencion,fallaMantencion } = require("../../database/database");
 const { validExist } = require("../Helpers");
 
@@ -36,7 +35,7 @@ const creatingMantencion = async(req,res)=>{
 }
 
 //Get List 
-const ListMantencion = async(req,res)=>{
+const listMantencion = async(req,res)=>{
     try {
         // const MantencionList = await mantencion.findAll();
         const MantencionList = await mantencion.findAll({
@@ -52,7 +51,7 @@ const ListMantencion = async(req,res)=>{
     }
 }
 //PUT UPDATE 
-const UpdateMantencion = async(req,res)=>{
+const updateMantencion = async(req,res)=>{
     const { Id_componente,Id_evento,Id_tipo } = req.body;
     const id_mantencion = req.params.Id_mantencion;
 
@@ -72,11 +71,14 @@ const UpdateMantencion = async(req,res)=>{
             return res.status(422).json({errors});
         }
 
-        await mantencion.update(req.body,{
+        const newmantencion = await mantencion.update(req.body,{
             where:{ Id_mantencion: id_mantencion}
         });
-        console.log("Mantencion Modificada");
-        res.json({success:'Se ha modificado'});
+        if (newmantencion) {
+            console.log("Mantencion Modificada");
+            return newmantencion;
+        }
+        // res.json({success:'Se ha modificado'});
     } catch (error) {
         console.log(error);
         return res.status(500),json({
@@ -86,36 +88,39 @@ const UpdateMantencion = async(req,res)=>{
     }
 }
 //DELETE
-const DeleteMantencion = async(req,res)=>{
-    if (Number.isInteger(req.params.Id_mantencion)) {
-        return res.status(422).json({errores : "El id del mantencion no es valido"})
-    }
-    const id_mantencion = req.params.Id_mantencion;
+const deleteMantencion = async(Id_mantencion,res)=>{
+    // if (Number.isInteger(req.params.Id_mantencion)) {
+    //     return res.status(422).json({errores : "El id del mantencion no es valido"})
+    // }
+    // const id_mantencion = req.params.Id_mantencion;
     try {
-        const errors = []
-        const mantencionResult = await validExist("mantencion",id_mantencion,"id_mantencion","NOTEXIST"); 
+        // const errors = []
+        // const mantencionResult = await validExist("mantencion",id_mantencion,"id_mantencion","NOTEXIST"); 
 
-        mantencionResult != null && errors.push(mantencionResult); 
+        // mantencionResult != null && errors.push(mantencionResult); 
 
-        if (errors.length>0) {
-            return res.status(422).json({errors});
-        }
+        // if (errors.length>0) {
+        //     return res.status(422).json({errors});
+        // }
         //VALID ID_FALLAMANTENCION
-        const IdfallaMantencion = await fallaMantencion.findAll({
-            attributes: ['Id_FallaMantencion'],
-            where:{
-                Id_mantencion:id_mantencion
-            }
-        });
-        if (typeof IdfallaMantencion[0] != 'undefined') {
-            return res.status(422).json({errores : "El id ingresado ya esta registrado, primero elimine la falla asociada a la mantecion"})
-        }
+        // const IdfallaMantencion = await fallaMantencion.findAll({
+        //     attributes: ['Id_FallaMantencion'],
+        //     where:{
+        //         Id_mantencion:id_mantencion
+        //     }
+        // });
+        // if (typeof IdfallaMantencion[0] != 'undefined') {
+        //     return res.status(422).json({errores : "El id ingresado ya esta registrado, primero elimine la falla asociada a la mantecion"})
+        // }
 
-        await mantencion.destroy({
-            where:{ Id_mantencion: id_mantencion}
+        const deleteMantencion = await mantencion.destroy({
+            where:{ Id_mantencion}
         });
-        console.log(`Mantencion Eliminada ${id_mantencion}`);
-        res.json({success:'Se ha Eliminado'});
+        if (deleteMantencion) {
+            console.log(`Mantencion Eliminada ${Id_mantencion}`);
+            return deleteMantencion;
+            // res.json({success:'Se ha Eliminado'});
+        }
     } catch (error) {
         console.log(error);
         return res.status(500),json({
@@ -126,7 +131,7 @@ const DeleteMantencion = async(req,res)=>{
 }
 module.exports = {
     creatingMantencion,
-    UpdateMantencion,
-    DeleteMantencion,
-    ListMantencion
+    updateMantencion,
+    deleteMantencion,
+    listMantencion
 };

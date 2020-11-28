@@ -1,7 +1,7 @@
 
 const { login } = require("../database/database");
 const bcrypt = require('bcryptjs');
-const { validExist } = require("./Helpers");
+const { validExist,format_rutify } = require("./Helpers");
 
 //POST Create User
 const CreatingUser = async(req,res)=>{
@@ -58,7 +58,15 @@ const ListUsers = async(req,res)=>{
 }
 //PUT UPDATE Users
 const UpdateUser = async(req,res)=>{
-    const Rut = req.params.userRUT;
+    
+    const Rut = format_rutify(req.params.userRUT);
+    if (!Rut) {
+        return res.status(500),json({
+           message:"Ha ocurrido un error",
+           data:{}
+       })  
+    }
+    console.log(req.params.userRUT)
     try {
         const errors = []
         const usersResult = await validExist("users",Rut,"Rut","NOTEXIST");
@@ -89,7 +97,7 @@ const DeleteUser = async(req,res)=>{
         // //VALID RUT ON TABLE LOGIN
         const rutLogin = await login.findAll({ where:{  Rut: req.params.userRUT }});      
         if (typeof rutLogin[0] == 'undefined') {
-            return res.status(422).json({errores : "El Rut ingresado no existe"})
+            return res.status(422).json({errors : "El Rut ingresado no existe"})
         }
         await login.destroy({
             where:{ 

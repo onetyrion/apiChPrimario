@@ -13,7 +13,7 @@ const creatingfUsuario = async(req,res)=>{
         const rutUsers = await users.findAll({ where:{ Rut:Rut }});
 
         if (typeof rutUsers[0] !== 'undefined') {
-            return res.status(422).json({errores : "El Rut ingresado ya esta registrado"})
+            return res.status(422).json({errors : "El Rut ingresado ya esta registrado"})
         }
         const loginResult = await validExist("login",Rut,"Rut","EXIST");
         const rolResult = await validExist("rol",Id_rol,"Id_rol","NOTEXIST");

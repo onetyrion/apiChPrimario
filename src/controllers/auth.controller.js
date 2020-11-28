@@ -1,5 +1,4 @@
 //dependences
-const authRoute = require("express").Router();
 const bcrypt = require('bcryptjs');
 const jwtsimple = require('jwt-simple');
 const moment = require('moment');
@@ -8,11 +7,17 @@ const moment = require('moment');
 const { users, login } = require("../database/database");
 const { tokenWord } = require("../../config/token");
 
-//Routers
+//----------------------------Routers-------------------------------
 //POST Create User
 const LoginAuth = async(req,res)=>{
-    const userLogin = await login.findOne({ where: { Rut: req.body.Rut }
-    });
+    const userLogin = await login.findOne({ where: { Rut: req.body.Rut } });
+    const user = await users.findOne({ where: { Rut: req.body.Rut } });
+    console.log(user.Estado)
+    if (!user.Estado) {
+        res.status(422).json({
+            error: "Cuenta Desactivada"
+        });
+    }
     if (userLogin) {
         const igualar = bcrypt.compareSync(req.body.Password, userLogin.Password);
         if (igualar) {
@@ -21,7 +26,7 @@ const LoginAuth = async(req,res)=>{
                 user:{Rut:userLogin.Rut,Rol:userLogin.Id_rol}
             });
         } else {
-            res.send({
+            res.status(422).json({
                 error: "Error en usuario y/o contraseña"
             });
         }

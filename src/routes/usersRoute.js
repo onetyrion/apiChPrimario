@@ -21,7 +21,7 @@ usersRouter.post('/',[
     //Check Errors
     const errors = validationResult(req);
     if(!errors.isEmpty()){
-        return res.status(422).json({errores : errors.array()})
+        return res.status(422).json({errors : errors.array()})
     }
     //Load Controller
     CreatingUser(req,res);
@@ -50,6 +50,19 @@ usersRouter.put('/:userRUT',[
     UpdateUser(req,res);
 })
 
+usersRouter.put('/state/:userRUT',[
+    //Check Parameters on Body
+    check('Estado','El estado es Obligatorio').not().isEmpty()
+],async (req,res) =>{
+    //Check Errors
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        console.log(errors.array())
+        return res.status(422).json({errors : errors.array()})
+    }
+    //Load Controller
+    UpdateUser(req,res);
+})
 usersRouter.delete('/:userRUT',DeleteUser)
 
 module.exports = usersRouter;

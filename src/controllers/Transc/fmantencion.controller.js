@@ -64,7 +64,7 @@ const UpdatefMantencion = async(req,res)=>{
     const errors = [];
     const { Id_componente,Id_evento,Id_tipo,Id_falla } = req.body;
     if (Number.isInteger(req.params.Id_mantencion)) {
-        return res.status(422).json({errores : "El id de la Mantneción no es valido"})
+        return res.status(422).json({errors : "El id de la Mantneción no es valido"})
     }
     try {  
         //VALIDATION BODY & PARAMS
@@ -102,7 +102,7 @@ const UpdatefMantencion = async(req,res)=>{
 const DeletefMantencion = async(req,res)=>{
     const errors = [];
     if (Number.isInteger(req.params.Id_FallaMantencion)) {
-        return res.status(422).json({errores : "El id de la Mantneción no es valido"})
+        return res.status(422).json({errors : "El id de la Mantneción no es valido"})
     }
     const Id_mantencion = req.params.Id_mantencion;
 

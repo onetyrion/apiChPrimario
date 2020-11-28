@@ -90,7 +90,7 @@ const updateMantencion = async(req,res)=>{
 //DELETE
 const deleteMantencion = async(Id_mantencion,res)=>{
     // if (Number.isInteger(req.params.Id_mantencion)) {
-    //     return res.status(422).json({errores : "El id del mantencion no es valido"})
+    //     return res.status(422).json({errors : "El id del mantencion no es valido"})
     // }
     // const id_mantencion = req.params.Id_mantencion;
     try {
@@ -110,7 +110,7 @@ const deleteMantencion = async(Id_mantencion,res)=>{
         //     }
         // });
         // if (typeof IdfallaMantencion[0] != 'undefined') {
-        //     return res.status(422).json({errores : "El id ingresado ya esta registrado, primero elimine la falla asociada a la mantecion"})
+        //     return res.status(422).json({errors : "El id ingresado ya esta registrado, primero elimine la falla asociada a la mantecion"})
         // }
 
         const deleteMantencion = await mantencion.destroy({

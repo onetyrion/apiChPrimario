@@ -6,7 +6,6 @@ const { validExist } = require("../Helpers");
 const creatingfallaMantencion = async(req,res)=>{
     const { Id_mantencion,Id_falla } = req;
     try {
-
         let newfallaMantencion = await fallaMantencion.create({
             Id_mantencion,
             Id_falla,

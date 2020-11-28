@@ -69,9 +69,25 @@ const validExist = async(tabla,valor,campo,logic) => {
     }
     return;
 }
-
+// BY GITHUB/MARTIIXX
+const format_rutify = (str)=> {
+	let clearRut = typeof str === 'string' ? str.replace(/[^0-9kK]+/g, '').toUpperCase() : '' // limpiamos la variable rut
+	if (clearRut.length <= 1) {
+		return str
+	}
+	var result = clearRut.slice(-4, -1) + '-' + clearRut.substr(clearRut.length - 1)
+	for (var i = 4; i < clearRut.length; i += 3) {
+	result = clearRut.slice(-3 - i, -i) + '.' + result
+	}
+	str = result
+	if (typeof str !== 'string') {
+		return str
+	}
+	return str;
+}
 module.exports = {
     trucatedecimal,
     validExist,
-    validateTypes
+    validateTypes,
+    format_rutify
 }

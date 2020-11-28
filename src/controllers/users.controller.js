@@ -11,7 +11,7 @@ const CreatingUser = async(req,res)=>{
         const rutUsers = await users.findAll({ where:{ Rut:Rut }});
 
         if (typeof rutUsers[0] !== 'undefined') {
-            return res.status(422).json({errores : "El Rut ingresado ya esta registrado"})
+            return res.status(422).json({errors : "El Rut ingresado ya esta registrado"})
         }
         
         const RutResult = await validateTypes(Rut,"string",12);

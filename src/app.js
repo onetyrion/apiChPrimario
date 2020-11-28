@@ -17,7 +17,7 @@ require('./database/database');
 require('./database/databaseDM');
 
 //Whitelist de las conexiones que se comunican con la API
-var whitelist = ['http://localhost:3100']
+var whitelist = ['http://689be4b6f065.ngrok.io:3100']
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {

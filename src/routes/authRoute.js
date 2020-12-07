@@ -11,7 +11,7 @@ authRoute.post('/', [
     check('Password', 'La contraseña es Obligatoria').not().isEmpty(),
     check('Id_rol', 'El rol tiene que ser valido').isInt()
 ], async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({

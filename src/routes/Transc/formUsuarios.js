@@ -26,5 +26,7 @@ fUsuarioRoute.post('/', [
     }
     creatingfUsuario(req, res);
 });
-fUsuarioRoute.delete('/:userRUT', deletefUsuario)
+
+fUsuarioRoute.delete('/:userRUT', deletefUsuario);
+
 module.exports = fUsuarioRoute;

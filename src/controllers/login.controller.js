@@ -13,18 +13,18 @@ const CreatingUser = async(req,res)=>{
     }
     const { Rut,Password,Id_rol } = req.body;
     try {
-        const errors = []
-        const loginResult = await validExist("login",Rut,"Rut","EXIST");
-        const usersResult = await validExist("users",Rut,"Rut","NOTEXIST");
-        const rolResult = await validExist("rol",Id_rol,"Id_rol","NOTEXIST");
+        // const errors = []
+        // const loginResult = await validExist("login",Rut,"Rut","EXIST");
+        // const usersResult = await validExist("users",Rut,"Rut","NOTEXIST");
+        // const rolResult = await validExist("rol",Id_rol,"Id_rol","NOTEXIST");
 
-        loginResult != null && errors.push(loginResult);
-        usersResult != null && errors.push(usersResult);
-        rolResult != null && errors.push(rolResult);
+        // loginResult != null && errors.push(loginResult);
+        // usersResult != null && errors.push(usersResult);
+        // rolResult != null && errors.push(rolResult);
         
-        if (errors.length>0) {
-            return res.status(422).json({errors});
-        }
+        // // if (errors.length>0) {
+        // //     return res.status(422).json({errors});
+        // // }
 
         let newLoginUser = await login.create({
             Rut,
@@ -35,11 +35,7 @@ const CreatingUser = async(req,res)=>{
             return newLoginUser;
         }
     } catch (error) {
-        console.log(error);
-        return res.status(500),json({
-           message:"Ha ocurrido un error",
-           data:{}
-       }) 
+        return error;
     }
 }
 //Get List login

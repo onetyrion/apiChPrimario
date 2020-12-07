@@ -12,8 +12,8 @@ const { tokenWord } = require("../../config/token");
 const LoginAuth = async(req,res)=>{
     const userLogin = await login.findOne({ where: { Rut: req.body.Rut } });
     const user = await users.findOne({ where: { Rut: req.body.Rut } });
-    console.log(user.Estado)
-    if (!user.Estado) {
+    // console.log(user)
+    if (user && !user.Estado) {
         res.status(422).json({
             error: "Cuenta Desactivada"
         });
@@ -31,8 +31,8 @@ const LoginAuth = async(req,res)=>{
             });
         }
     } else {
-        res.send({
-            error: "Error en usuario y/o contraseña1"
+        res.status(422).json({
+            error: "Error en usuario y/o contraseña"
         });
     }
 }

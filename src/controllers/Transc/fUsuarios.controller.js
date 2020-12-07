@@ -1,6 +1,6 @@
 // const { creatingMantencion } = require('./mantencion.controller');
 // const { creatingfallaMantencion } = require ('./fallaMatencion.controller');
-const { validExist } = require('../Helpers');
+const { validExist,validateTypes } = require('../Helpers');
 const { CreatingUser } = require('../users.controller');
 const { CreatingUser:CreatingUserLogin}  = require('../login.controller');
 const { users, login } = require('../../database/database');
@@ -8,7 +8,7 @@ const { users, login } = require('../../database/database');
 //POST Create 
 const creatingfUsuario = async(req,res)=>{
     const errors = []
-    const { Rut,Id_rol} = req.body;
+    const { Rut,Id_rol,Id_empresa, Estado} = req.body;
     try {
         const rutUsers = await users.findAll({ where:{ Rut:Rut }});
 
@@ -17,9 +17,14 @@ const creatingfUsuario = async(req,res)=>{
         }
         const loginResult = await validExist("login",Rut,"Rut","EXIST");
         const rolResult = await validExist("rol",Id_rol,"Id_rol","NOTEXIST");
-
+        const empresaResult = await validExist("empresa",Id_empresa,"Id_empresa","NOTEXIST");
+        const EstadoResult = await validateTypes(Estado,"boolean");
+        // const rolResult = await validExist("rol",Id_rol,"Id_rol","NOTEXIST");
+        
+        EstadoResult != null && errors.push(EstadoResult);
         loginResult != null && errors.push(loginResult);
         rolResult != null && errors.push(rolResult);
+        empresaResult != null && errors.push(empresaResult);
         if (errors.length>0) { return res.status(422).json({errors}); }
 
         //CREATING ON TABLE USUARIO
@@ -38,9 +43,9 @@ const creatingfUsuario = async(req,res)=>{
         }
     } catch (error) {
         console.log(error);
-        return res.status(500),json({
+        return res.status(422).json({
            message:"Ha ocurrido un error",
-           data:{}
+           data:{error}
        }) 
     }
 }
@@ -65,7 +70,7 @@ const deletefUsuario = async(req,res)=> {
 
     } catch (error) {
         console.log(error);
-        return res.status(500),json({
+        return res.status(500).json({
            message:"Ha ocurrido un error",
            data:{}
        }) 

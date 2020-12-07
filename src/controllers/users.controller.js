@@ -5,18 +5,20 @@ const { validExist, validateTypes } = require("./Helpers");
 //POST Create User
 const CreatingUser = async(req,res)=>{
     const { Rut,Nombre,Apellidos,Correo_electronico,Estado,Cargo,Id_empresa } = req.body;
-    const errors = [];
+    // const errors = [];
     try {
         //VALID RUT ON TABLE USERS
-        const rutUsers = await users.findAll({ where:{ Rut:Rut }});
+        // const rutUsers = await users.findAll({ where:{ Rut:Rut }});
 
-        if (typeof rutUsers[0] !== 'undefined') {
-            return res.status(422).json({errors : "El Rut ingresado ya esta registrado"})
-        }
+        // if (typeof rutUsers[0] !== 'undefined') {
+        //     return res.status(422).json({errors : "El Rut ingresado ya esta registrado"})
+        // }
         
-        const RutResult = await validateTypes(Rut,"string",12);
-        RutResult != null && errors.push(RutResult);
-        if (errors.length>0) { return res.status(422).json({errors}); }
+        // const RutResult = await validateTypes(Rut,"string",12);
+        // const EstadoResult = await validateTypes(Estado,"boolean")
+        // RutResult != null && errors.push(RutResult);
+        // EstadoResult != null && errors.push(EstadoResult);
+        // if (errors.length>0) { return res.status(422).json({errors}); }
         
         let newUser = await users.create({
             Rut,
@@ -31,11 +33,7 @@ const CreatingUser = async(req,res)=>{
             return newUser;
         }
     } catch (error) {
-        console.log(error);
-        return res.status(500),json({
-           message:"Ha ocurrido un error",
-           data:{}
-       }) 
+        return error;
     }
 }
 
@@ -51,7 +49,7 @@ const ListUsers = async(req,res)=>{
         }
     } catch (error) {
         console.log(error);
-        return res.status(500),json({
+        return res.status(500).json({
            message:"Ha ocurrido un error",
            data:{}
        })         
@@ -59,24 +57,35 @@ const ListUsers = async(req,res)=>{
 }
 //PUT UPDATE Users
 const UpdateUser = async(req,res)=>{
+    const { Nombre,Apellidos,Correo_electronico,Estado,Cargo,Id_empresa } = req.body;
     const errors = []
     const Rut = req.params.userRUT;
-    req.body.Rut=req.params.userRUT;
     try {
         const usersResult = await validExist("users",Rut,"Rut","NOTEXIST");
+        const empresaResult = await validExist("empresa",Id_empresa,"Id_empresa","NOTEXIST");
+        const EstadoResult = await validateTypes(Estado,"boolean")
         usersResult != null && errors.push(usersResult);
+        empresaResult != null && errors.push(empresaResult);
+        EstadoResult != null && errors.push(EstadoResult);
+
         if (errors.length>0) {
             return res.status(422).json({errors});
         }
 
-        await users.update(req.body,{
-            where:{ rut:Rut}
+        await users.update({
+            Nombre,
+            Apellidos,
+            Correo_electronico,
+            Cargo,
+            Id_empresa  
+        },{
+            where:{ Rut}
         });
-        console.log("Usuario Modificado");
+        // console.log("Usuario Modificado");
         res.json({success:'Se ha modificado'});
     } catch (error) {
         console.log(error);
-        return res.status(500),json({
+        return res.status(500).json({
            message:"Ha ocurrido un error",
            data:{}
        })         
@@ -105,7 +114,7 @@ const DeleteUser = async(req,res)=>{
         res.json({success:'Se ha Eliminado'});
     } catch (error) {
         console.log(error);
-        return res.status(500),json({
+        return res.status(500).json({
            message:"Ha ocurrido un error",
            data:{}
        })         

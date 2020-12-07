@@ -5,18 +5,22 @@ const config = require('../../config/config');
 const FACT_MantencionModel = require('../models/DM/FACT_Mantencion');
 const DIM_TiempoModel = require('../models/DM/DIM_Tiempo');
 
-const sequelize = new Sequelize(config.dbnamedm, config.username, config.password, {
+const sequelize = new Sequelize(
+	process.env.DATABASE_CREDENTIALS_DBNAMEDM, 
+	process.env.DATABASE_CREDENTIALS_USERNAME,
+	process.env.DATABASE_CREDENTIALS_PASSWORD, {
 	dialect: 'mssql',
-	host: config.host,
-    port: config.port,
+	host: process.env.DATABASE_CREDENTIALS_HOST,
+    port: process.env.DATABASE_CREDENTIALS_PORT,
 	timestamps: false,
+	logging: false,
 	pool: {
 		max: 5,
 		min: 0,
 		acquire: 30000,
 		idle: 10000
 	}
-})
+});
 ///////////////TEST CONNECTION 
 
 // .authenticate()
@@ -36,9 +40,9 @@ DIM_Tiempo.hasOne(FACT_Mantencion,{ foreignKey:"Id_tiempo" });
 sequelize.sync({
 		force: false
 	})
-	.then(() => {
-		console.log("\n**************************************\n tablas sincronizadas en DATAMART \n**************************************\n")
-	})
+	// .then(() => {
+	// 	console.log("\n**************************************\n tablas sincronizadas en DATAMART \n**************************************\n")
+	// })
 
 module.exports = {
 	FACT_Mantencion,

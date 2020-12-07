@@ -8,14 +8,14 @@ const { falla, componente, fallaComponente } = require('../../database/database'
 //POST Create 
 const creatingfFallaC = async(req,res)=>{
     const errors = []
-    const { Id_categoria, Id_tipo, Id_componente} = req.body;
+    const { Id_categoria, Id_componente} = req.body;
     try {
         const categoriaResult = await validExist("categoria",Id_categoria,"Id_categoria","NOTEXIST");
-        const tipoFallaResult = await validExist("tipoFalla",Id_tipo,"Id_tipo","NOTEXIST");
+        // const tipoFallaResult = await validExist("tipoFalla",Id_tipo,"Id_tipo","NOTEXIST");
         const componenteResult = await validExist("componente",Id_componente,"Id_componente","NOTEXIST");
 
         categoriaResult != null && errors.push(categoriaResult);
-        tipoFallaResult != null && errors.push(tipoFallaResult);
+        // tipoFallaResult != null && errors.push(tipoFallaResult);
         componenteResult != null && errors.push(componenteResult);
         if (errors.length>0) { return res.status(422).json({errors}); }
 
@@ -48,7 +48,7 @@ const creatingfFallaC = async(req,res)=>{
 
 const updatefFallaC = async(req,res)=>{
     const errors = []
-    const { Id_categoria, Id_tipo, newId_componente} = req.body;
+    const { Id_categoria, newId_componente} = req.body;
     const { Id_falla,Id_componente } = req.params;
     const idComponentesResult = await validateTypes(Id_componente,"number");
     const idFallaResult = await validateTypes(Id_falla,"number");
@@ -59,15 +59,14 @@ const updatefFallaC = async(req,res)=>{
     if (errors.length>0) { return res.status(422).json({errors}); }
     
     try {
-        console.log(typeof Id_falla)
         const categoriaResult = await validExist("categoria",Id_categoria,"Id_categoria","NOTEXIST");
-        const tipoFallaResult = await validExist("tipoFalla",Id_tipo,"Id_tipo","NOTEXIST");
+        // const tipoFallaResult = await validExist("tipoFalla",Id_tipo,"Id_tipo","NOTEXIST");
         const componenteResult = await validExist("componente",Id_componente,"Id_componente","NOTEXIST");
         const newcomponenteResult = await validExist("componente",newId_componente,"Id_componente","NOTEXIST");
         const fallaResult = await validExist("falla",Id_falla,"Id_falla","NOTEXIST");
 
         categoriaResult != null && errors.push(categoriaResult);
-        tipoFallaResult != null && errors.push(tipoFallaResult);
+        // tipoFallaResult != null && errors.push(tipoFallaResult);
         componenteResult != null && errors.push(componenteResult);
         newcomponenteResult != null && errors.push(newcomponenteResult);
         fallaResult != null && errors.push(fallaResult);

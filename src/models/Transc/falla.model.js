@@ -15,13 +15,13 @@ module.exports = (sequelize,type) =>{
         Descripcion_causa:{
             type:type.STRING
         },
-        Id_tipo:{
-            type:type.INTEGER,
-            references: {
-                model: 'Tipo_falla',
-                key: 'Id_tipo'
-            }
-        },
+        // Id_tipo:{
+        //     type:type.INTEGER,
+        //     references: {
+        //         model: 'Tipo_falla',
+        //         key: 'Id_tipo'
+        //     }
+        // },
         Falla:{
             type:type.BOOLEAN
         },

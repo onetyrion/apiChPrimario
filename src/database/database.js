@@ -1,5 +1,6 @@
 const {	Sequelize } = require('sequelize');
 const config = require('../../config/config');
+require('dotenv').config();
 
 //MODELS BASE SYSTEM
 const usersModel = require('../models/usersModel');
@@ -9,7 +10,7 @@ const usuarioAreaProductivaModel = require('../models/Usuario_AreaProductiva.mod
 //MODELS
 const componenteModel = require('../models/Transc/componente.model');
 const mantencionModel = require('../models/Transc/mantencion.model');
-const tipofallaModel = require('../models/Transc/tipo_falla.model');
+// const tipofallaModel = require('../models/Transc/tipo_falla.model');
 const categoriaModel = require('../models/Transc/categoria.model');
 const fallaModel = require('../models/Transc/falla.model');
 const fallaMantencionModel = require('../models/Transc/fallaMantencion.model');
@@ -24,10 +25,14 @@ const empresaModel = require('../models/Transc/empresa.model');
 const tipoMaquinariaModel = require('../models/Transc/tipoMaquinaria.model');
 
 //Conection DB
-const sequelize = new Sequelize(config.dbnametrans, config.username, config.password, {
+export const sequelize = new Sequelize(
+	process.env.DATABASE_CREDENTIALS_DBNAMEOLTP, 
+	process.env.DATABASE_CREDENTIALS_USERNAME,
+	process.env.DATABASE_CREDENTIALS_PASSWORD, {
 	dialect: 'mssql',
-	host: config.host,
-    port: config.port,
+	host: process.env.DATABASE_CREDENTIALS_HOST,
+    port: process.env.DATABASE_CREDENTIALS_PORT,
+	logging: false,
 	timestamps: false,
 	pool: {
 		max: 5,
@@ -35,15 +40,8 @@ const sequelize = new Sequelize(config.dbnametrans, config.username, config.pass
 		acquire: 30000,
 		idle: 10000
 	}
-})
+});
 /// TEST CONECTION
-// .authenticate()
-// .then(function(err) {
-//   console.log('Se ha establecido conexión exitosamente.');
-// })
-// .catch(function (err) {
-//   console.log('No se ha podido establecer conexión con la base de datos:', err);
-// });
 
 //SET MODELS
 const users = usersModel(sequelize, Sequelize);
@@ -51,7 +49,7 @@ const login = loginModel(sequelize, Sequelize);
 const rol = rolModel(sequelize, Sequelize);
 const componente = componenteModel(sequelize, Sequelize);
 const mantencion = mantencionModel(sequelize, Sequelize);
-const tipoFalla = tipofallaModel(sequelize, Sequelize);
+// const tipoFalla = tipofallaModel(sequelize, Sequelize);
 const categoria = categoriaModel(sequelize, Sequelize);
 const falla = fallaModel(sequelize, Sequelize);
 const fallaMantencion = fallaMantencionModel(sequelize, Sequelize);
@@ -77,9 +75,9 @@ mantencion.hasMany(fallaMantencion,{ foreignKey:"Id_mantencion" });
 sequelize.sync({
 		force: false
 	})
-	.then(() => {
-		console.log("\n**************************************\n tablas sincronizadas en TRANSACCIONAL \n**************************************\n")
-	})
+	// .then(() => {
+	// 	console.log("\n**************************************\n tablas sincronizadas en OLTP \n**************************************\n")
+	// })
 
 module.exports = {
 	users,
@@ -93,7 +91,7 @@ module.exports = {
 	evento,
 	componente,
 	categoria,
-	tipoFalla,
+	// tipoFalla,
 	falla,
 	maquinaria,
 	indicador,

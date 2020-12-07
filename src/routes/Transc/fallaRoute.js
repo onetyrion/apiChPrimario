@@ -11,7 +11,7 @@ const { creatingfFallaC, updatefFallaC, deletefFallaC } = require("../../control
 fallaRoute.post('/', [
     check('Id_categoria', 'La id de la Categoria es Obligatoria').isInt(),
     check('Id_componente', 'La id del Componente es Obligatoria').isInt(),
-    check('Id_tipo', 'El tipo de la falla es obligatoria').isInt(),
+    // check('Id_tipo', 'El tipo de la falla es obligatoria').isInt(),
     check('Descripcion_causa', 'La Descripción es obligatoria').not().isEmpty(),
     check('Falla', 'La falla es obligatoria').not().isEmpty()
 ], async (req, res) => {
@@ -30,7 +30,7 @@ fallaRoute.put('/:Id_falla/:Id_componente', [
     // check('Id_componente', 'La id del Componente es Obligatoria').isInt(),
     check('newId_componente', 'La id del Componente es Obligatoria').isInt(),
     check('Id_categoria', 'La id de la Categoria es Obligatoria').isInt(),
-    check('Id_tipo', 'El tipo de la falla es obligatoria').isInt(),
+    // check('Id_tipo', 'El tipo de la falla es obligatoria').isInt(),
     check('Descripcion_causa', 'La Descripción es obligatoria').not().isEmpty(),
     check('Falla', 'La falla es obligatoria').not().isEmpty()
 ], async (req, res) => {

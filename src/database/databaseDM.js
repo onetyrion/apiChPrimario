@@ -31,11 +31,11 @@ const sequelize = new Sequelize(
 //   console.log('Unable to connect to the database:', err);
 // });
 
-const FACT_Mantencion = FACT_MantencionModel(sequelize, Sequelize);
-const DIM_Tiempo = DIM_TiempoModel(sequelize, Sequelize);
+// const FACT_Mantencion = FACT_MantencionModel(sequelize, Sequelize);
+// const DIM_Tiempo = DIM_TiempoModel(sequelize, Sequelize);
 
-FACT_Mantencion.hasOne(DIM_Tiempo,{ foreignKey:"Id_tiempo" });
-DIM_Tiempo.hasOne(FACT_Mantencion,{ foreignKey:"Id_tiempo" });
+// FACT_Mantencion.hasOne(DIM_Tiempo,{ foreignKey:"Id_tiempo" });
+// DIM_Tiempo.hasOne(FACT_Mantencion,{ foreignKey:"Id_tiempo" });
 
 sequelize.sync({
 		force: false
@@ -45,7 +45,7 @@ sequelize.sync({
 	// })
 
 module.exports = {
-	FACT_Mantencion,
-	DIM_Tiempo,
+	// FACT_Mantencion,
+	// DIM_Tiempo,
 	sequelize
 }

@@ -300,6 +300,41 @@ const ListMTBME = async(req,res)=>{
        })         
     }
 }
+
+//********************************************************
+// ******************************************* */
+
+const LISTAVIEWDETENCIONES = async(req,res)=>{
+    try {
+        const DM_Mantencion = await sequelize.query("select * from view_DMDetencionCandelaria");
+        // await FACT_Mantencion.count().then(c=>{console.log("Hay "+c+" Registros")});
+        console.log("DM_Mantencion");
+        const pivotDates = DM_Mantencion[0]
+        res.json({pivotDates});
+    } catch (error) {
+        console.log(error);
+        return res.status(500),json({
+        message:"Ha ocurrido un error",
+           data:{}
+       })         
+    }
+}
+const LISTAVIEWDETENCIONES1 = async(req,res)=>{
+    try {
+        const DM_Mantencion = await sequelize.query("select * from view_DMDetencionCandelaria");
+        // await FACT_Mantencion.count().then(c=>{console.log("Hay "+c+" Registros")});
+        // console.log(DM_Mantencion);
+        const pivotDates = DM_Mantencion[0]
+        res.json(pivotDates);
+    } catch (error) {
+        console.log(error);
+        return res.status(500),json({
+           message:"Ha ocurrido un error",
+           data:{}
+       })         
+    }
+}
+
 module.exports = {
     ListDMMantencionesDisponibilidad,
     ListTiposMantencion,
@@ -308,5 +343,7 @@ module.exports = {
     ListDisponibilidadAnual,
     ListMTTR,
     ListMTBF,
-    ListMTBME
+    ListMTBME,
+    LISTAVIEWDETENCIONES,
+    LISTAVIEWDETENCIONES1
 };

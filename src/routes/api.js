@@ -6,7 +6,7 @@ const apiUserRoute = require('./usersRoute');
 const loginRoute = require('./loginRoute');
 const authRoute = require('./authRoute');
 const componentRoute = require('./Transc/componentRoute');
-// const mantencionRoute = require('./Transc/mantencionRoute');
+const factRouter = require('./factRoute');
 const fallamantencionRoute = require('./Transc/fallaMantencionRoute');
 const fallaRoute = require('./Transc/fallaRoute');
 const maquinariaRoute = require('./Transc/maquinariaRoute');
@@ -29,7 +29,7 @@ router.use('/users', middleware.checkToken, apiUserRoute);
 router.use('/login',middleware.checkToken, loginRoute);
 router.use('/registrarusuario',middleware.checkToken,fUsuario);
 router.use('/vauth', middleware.checkToken, vauthRoute);
-// router.use('/dm', middleware.checkToken,factRouter);
+router.use('/dm',factRouter);
 
 //Routers TRANSC
 // router.use('/mantencion',middleware.checkToken,mantencionRoute);

@@ -21,8 +21,8 @@ require('./database/databaseDM');
 var whitelist = ['http://localhost:3100']
 var corsOptions = {
   origin: function (origin, callback) {
-    // if (true) {
-    if (whitelist.indexOf(origin) !== -1) {
+    if (true) {
+    // if (whitelist.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
       console.log(origin)

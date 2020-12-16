@@ -2,9 +2,7 @@ const router = require('express').Router();
 
 //Imports
 const middleware = require('./middlewares');
-const apiUserRoute = require('./usersRoute');
 const loginRoute = require('./loginRoute');
-const authRoute = require('./authRoute');
 const componentRoute = require('./Transc/componentRoute');
 const factRouter = require('./factRoute');
 const fallamantencionRoute = require('./Transc/fallaMantencionRoute');
@@ -22,6 +20,8 @@ const indicadorRoute = require('./Transc/indicadorRoute');
 const eventoRoute = require('./Transc/eventoMantencionRoute');
 const tipoMantencionRoute = require('./Transc/tipoMantencionRoute');
 const pMantencionRoute = require('./Transc/programaMantencionRoute');
+const apiUserRoute = require('./usersRoute');
+const authRoute = require('./authRoute');
 
 //Routers BASE
 router.use('/auth', authRoute);

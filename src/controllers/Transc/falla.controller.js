@@ -49,7 +49,7 @@ const listFalla = async(req,res)=>{
         // const fallaList = await falla.findAll();
         const fallaList = await falla.findAll({ 
             include: {model:fallaComponente}});
-        console.log(fallaList);
+        // console.log(fallaList);
         res.json(fallaList);
     } catch (error) {
         console.log(error);

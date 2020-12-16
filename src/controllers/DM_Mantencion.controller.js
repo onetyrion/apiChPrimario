@@ -1,5 +1,5 @@
-const { FACT_Mantencion,DIM_Tiempo,sequelize } = require("../database/databaseDM");
-const { trucatedecimal } = require("./Helpers");
+const { FACT_Mantencion,sequelize } = require("../database/databaseDM");
+const { trucatedecimal, validExist, validateTypes } = require("./Helpers");
 
 //Get List Users
 const ListDMMantencionesDisponibilidad = async(req,res)=>{
@@ -127,46 +127,48 @@ const ListEventoMantencion = async(req,res)=>{
 }
 
 const ListDisponibilidadAnual = async(req,res)=>{
-    let meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-    let dispmeses = [];
-    var Time = parseInt(typeof req.params.year === "string" ? req.params.year : "1");
-    var CampofechaDB = "";
-    if (!Number.isInteger(Time)) {
-        console.log("El Fecha no es valido");
-        return res.status(500),json({
-           message:"Ingrese una Fecha valido",
-           data:{}
-       }) 
-    }if (Time>12) {
-        CampofechaDB = "Año";
+    const errors = []
+    let condicion1 ="",condicion2="";
+    //VALIDACIÓN DE PARAMETROS AÑO EQUIPO
+    if (req.params.year.length === 4 && req.params.year > 1900 && req.params.equipo) {
+        console.log("parametros");
+        const maquinariaResult = await validExist("maquinaria",req.params.equipo,"Nombre_maquinaria","NOTEXIST");
+        const yearResult = await validateTypes(req.params.year,"number");
+        maquinariaResult != null && errors.push(maquinariaResult);
+        yearResult != null && errors.push(yearResult);
+        if (errors.length>0) {
+            return res.status(422).json({errors});
+        }else{
+            condicion1=` AND Nombre_maquinaria = '${req.params.equipo}' AND Anio = '${req.params.year}'`;
+            condicion2=` Where Equipo = '${req.params.equipo}' AND Año = '${req.params.year}'`;
+        }
     }else{
-        CampofechaDB = "Mes";
+        return res.status(422).json({errors:"Ha ocurrido un error, Revise los parametros"});
     }
     try {
-        const DM_MantencionDisponibilidad = await sequelize.query("SELECT DIM_Tiempo.NombreMes,DIM_Tiempo.dia,DIM_Tiempo.Id_tiempo, FACT_Mantencion.Disponibilidad FROM [MantencionDatamart].[dbo].[FACT_Mantencion] INNER JOIN DIM_Tiempo ON[FACT_Mantencion].Id_tiempo = DIM_Tiempo.Id_tiempo WHERE "+CampofechaDB+" = "+Time)
-        .then(res => res[0])
-        // for(var mes in DM_MantencionDisponibilidad){
-        //     console.log(mes)
-        // }
-        // const values = res.map(val => {
-        // })\
-        meses.forEach(element => {
-            var sum = 0
-            var index = 0;
-            DM_MantencionDisponibilidad.forEach(val => {
-                if (element===val.NombreMes) {
-                    sum += val.Disponibilidad;   
-                    index++;              
-                }
-            });
-            //console.log(sum/index);
-            dispmeses.push(trucatedecimal((sum/index),2));
-        });
-        for (let i = 0; i < meses.length; i++) {
+        //PETICIONES SQL
+        const DM_MantencionDisponibilidad = await sequelize.query("SELECT AVG(Disponibilidad) as 'Disponiblidad_Anual', AVG(MTTR) as 'MTTR', AVG(MTBF) as 'MTBF',AVG(MTBME) as 'MTBME' FROM view_DMDisponibilidadCandelaria"+condicion2)
+        .then(res => res[0][0]);
+        const MetasDisponibilidad = await sequelize.query("SELECT * FROM Mantencion_chancador.dbo.Programa_Mantencion pm,mantencion_chancador.dbo.Maquinaria mq WHERE mq.Id_maquinaria = pm.Id_maquinaria"+condicion1)
+        .then(res => res[0]);
+
+        console.log(MetasDisponibilidad)
+        if (DM_MantencionDisponibilidad && MetasDisponibilidad.length>0) {
+            //JOIN METAS & DATA
+            for (let i = 0; i < MetasDisponibilidad.length; i++) {
+                
+            }
+            DM_MantencionDisponibilidad.Disponibilidad_Metas = MetasDisponibilidad[0].Meta;
+            DM_MantencionDisponibilidad.MTTR_Metas = MetasDisponibilidad[1].Meta;
+            DM_MantencionDisponibilidad.MTBF_Metas = MetasDisponibilidad[2].Meta;
+            DM_MantencionDisponibilidad.MTBME_Metas = MetasDisponibilidad[3].Meta;
             
-            //console.log(meses[i]+" " +dispmeses[i])
+            res.json(DM_MantencionDisponibilidad);   
+            
+        }else{
+            return res.status(422).json({errors:"No existen Datos"});
         }
-        res.json(dispmeses);
+
     } catch (error) {
         console.log(error);
         return res.status(500),json({
@@ -308,7 +310,7 @@ const LISTAVIEWDETENCIONES = async(req,res)=>{
     try {
         const DM_Mantencion = await sequelize.query("select * from view_DMDetencionCandelaria");
         // await FACT_Mantencion.count().then(c=>{console.log("Hay "+c+" Registros")});
-        console.log("DM_Mantencion");
+        // console.log("DM_Mantencion");
         const pivotDates = DM_Mantencion[0]
         res.json({pivotDates});
     } catch (error) {
@@ -319,13 +321,13 @@ const LISTAVIEWDETENCIONES = async(req,res)=>{
        })         
     }
 }
-const LISTAVIEWDETENCIONES1 = async(req,res)=>{
+const LISTAVIEWDISPONIBILIDAD = async(req,res)=>{
     try {
-        const DM_Mantencion = await sequelize.query("select * from view_DMDetencionCandelaria");
+        const DM_Mantencion = await sequelize.query("select * from view_DMDisponibilidadCandelaria");
         // await FACT_Mantencion.count().then(c=>{console.log("Hay "+c+" Registros")});
         // console.log(DM_Mantencion);
         const pivotDates = DM_Mantencion[0]
-        res.json(pivotDates);
+        res.json({pivotDates});
     } catch (error) {
         console.log(error);
         return res.status(500),json({
@@ -345,5 +347,5 @@ module.exports = {
     ListMTBF,
     ListMTBME,
     LISTAVIEWDETENCIONES,
-    LISTAVIEWDETENCIONES1
+    LISTAVIEWDISPONIBILIDAD
 };

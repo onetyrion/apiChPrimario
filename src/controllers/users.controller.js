@@ -62,13 +62,14 @@ const UpdateUser = async(req,res)=>{
     const Rut = req.params.userRUT;
     try {
         const usersResult = await validExist("users",Rut,"Rut","NOTEXIST");
-        const empresaResult = await validExist("empresa",Id_empresa,"Id_empresa","NOTEXIST");
+        const empresaResult = await validExist("empresa",1,"Id_empresa","NOTEXIST");
         const EstadoResult = await validateTypes(Estado,"boolean")
         usersResult != null && errors.push(usersResult);
         empresaResult != null && errors.push(empresaResult);
-        EstadoResult != null && errors.push(EstadoResult);
+        // EstadoResult != null && errors.push(EstadoResult);
 
         if (errors.length>0) {
+            console.log('errors', errors)
             return res.status(422).json({errors});
         }
 
@@ -77,17 +78,17 @@ const UpdateUser = async(req,res)=>{
             Apellidos,
             Correo_electronico,
             Cargo,
-            Id_empresa  
+            Estado,
+            Id_empresa:"1"  
         },{
             where:{ Rut}
         });
-        // console.log("Usuario Modificado");
+        console.log("Usuario Modificado");
         res.json({success:'Se ha modificado'});
     } catch (error) {
         console.log(error);
         return res.status(500).json({
-           message:"Ha ocurrido un error",
-           data:{}
+           errors:"Ha ocurrido un error"
        })         
     }
 }
@@ -104,6 +105,7 @@ const DeleteUser = async(req,res)=>{
         usersResult != null && errors.push(usersResult);
         
         if (errors.length>0) {
+            console.log('errors', errors)
             return res.status(422).json({errors});
         }
         

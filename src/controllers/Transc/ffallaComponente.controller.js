@@ -77,7 +77,7 @@ const updatefFallaC = async(req,res)=>{
                 Id_componente,Id_falla
             }
         })
-        console.log(fallaComponenteResult[0]);
+        // console.lo/g(fallaComponenteResult[0]);
         if (!fallaComponenteResult[0]) {
             return res.status(422).json({error:"No existe ese registro en falla_componente"});
         }        
@@ -119,7 +119,7 @@ const deletefFallaC = async(req,res)=> {
                 Id_componente,Id_falla
             }
         })
-        console.log(fallaComponenteResult[0]);
+        // console.log(fallaComponenteResult[0]);
         if (!fallaComponenteResult[0]) {
             return res.status(422).json({error:"No existe ese registro en falla_componente"});
         }    

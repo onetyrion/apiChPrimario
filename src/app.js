@@ -16,13 +16,13 @@ app.use(cors());
 //Auth Database trans and Datamart
 require('./database/database');
 require('./database/databaseDM');
-//Whitelist de las conexiones que se comunican con la API
-// var whitelist = ['https://689be4b6f065.ngrok.io']
-var whitelist = ['http://localhost:3100']
+
+//CORS--------
+var whitelist = ['http://localhost:3000/','http://localhost:3100/']
 var corsOptions = {
   origin: function (origin, callback) {
-    if (true) {
-    // if (whitelist.indexOf(origin) !== -1) {
+    // if (true) {
+    if (whitelist.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
       console.log(origin)
@@ -30,7 +30,6 @@ var corsOptions = {
     }
   }
 }
-
 app.get('/', cors(corsOptions), (req, res) =>{    
   res.json({mensaje: 'ok'});
 });

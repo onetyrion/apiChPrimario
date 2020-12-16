@@ -91,7 +91,6 @@ module.exports = {
 	evento,
 	componente,
 	categoria,
-	// tipoFalla,
 	falla,
 	maquinaria,
 	indicador,

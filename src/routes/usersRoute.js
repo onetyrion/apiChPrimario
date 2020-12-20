@@ -3,7 +3,7 @@ const { check, validationResult} = require('express-validator');
 
 //Controllers
 const {CreatingUser,ListUsers,UpdateUser,DeleteUser} = require("../controllers/users.controller")
-const { users} = require("../database/database");
+// const { users} = require("../database/database");
 
 //************************ */
 //ROUTES 

@@ -11,6 +11,9 @@ module.exports = (sequelize,type) =>{
         Estado:{
             type:type.BOOLEAN
         },
+        Empresa:{
+            type:type.STRING
+        },
         Id_area:{
             type:type.INTEGER,
             references: {

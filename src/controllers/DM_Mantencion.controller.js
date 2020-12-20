@@ -1,137 +1,14 @@
-const { FACT_Mantencion,sequelize } = require("../database/databaseDM");
-const { trucatedecimal, validExist, validateTypes } = require("./Helpers");
+const { sequelize } = require("../database/databaseDM");
+const { validExist, validateTypes } = require("./Helpers");
 
-//Get List Users
-const ListDMMantencionesDisponibilidad = async(req,res)=>{
-    try {
-        // const DM_Mantencion = await FACT_Mantencion.findAll({
-        //     attributes: ['Id_falla','Id_tiempo','Id_evento','Id_tipo','Id_componente','Hrs_programadas','Hrs_noProgramadas','Disponibilidad','MTTR','MTBF','MTBME','CantEventos_programados','CantEventos_noProgramados','HrsTotales_mantencion'],
-        //     include:{
-        //         model: DIM_Tiempo,
-        //         attributes: ['Mes']      
-        //     }
-        // });
-        const DM_Mantencion = await sequelize.query("SELECT DIM_Tiempo.Fecha,DIM_Tiempo.Id_tiempo, FACT_Mantencion.Disponibilidad FROM [MantencionDatamart].[dbo].[FACT_Mantencion] INNER JOIN DIM_Tiempo ON[FACT_Mantencion].Id_tiempo = DIM_Tiempo.Id_tiempo WHERE DIM_Tiempo.NombreMes = N'Enero'");
-        await FACT_Mantencion.count().then(c=>{console.log("Hay "+c+" Registros")});
-        console.log("DMMantenciones");
-        res.json({success:DM_Mantencion});
-    } catch (error) {
-        console.log(error);
-        return res.status(500),json({
-           message:"Ha ocurrido un error",
-           data:{}
-       })         
-    }
-}
-const ListTiposMantencion = async(req,res)=>{
-    var Time = parseInt(typeof req.params.year === "string" ? req.params.year : "1");
-    var CampofechaDB = "";
-    if (!Number.isInteger(Time)) {
-        console.log("El Fecha no es valido");
-        return res.status(500),json({
-           message:"Ingrese una Fecha valido",
-           data:{}
-       }) 
-    }if (Time>12) {
-        CampofechaDB = "Año";
-    }else{
-        CampofechaDB = "Mes";
-    }
-    try {
-        const DM_MantencionTipo1 = await sequelize.query("SELECT SUM(HrsTotales_mantencion) AS 'Mecanica' FROM [MantencionDatamart].[dbo].[FACT_Mantencion] INNER JOIN DIM_Tiempo ON[FACT_Mantencion].Id_tiempo = DIM_Tiempo.Id_tiempo WHERE Id_tipo = 1 AND "+CampofechaDB+" = "+Time);
-        const DM_MantencionTipo2 = await sequelize.query("SELECT SUM(HrsTotales_mantencion) AS 'Electrica' FROM [MantencionDatamart].[dbo].[FACT_Mantencion] INNER JOIN DIM_Tiempo ON[FACT_Mantencion].Id_tiempo = DIM_Tiempo.Id_tiempo WHERE Id_tipo = 2 AND "+CampofechaDB+" = "+Time);
-        const val = {
-            Mecanica: DM_MantencionTipo1[0][0].Mecanica ? DM_MantencionTipo1[0][0].Mecanica : 0 ,
-            Electrica: DM_MantencionTipo2[0][0].Electrica ? DM_MantencionTipo2[0][0].Electrica : 0 ,
-            Total: (DM_MantencionTipo1[0][0].Mecanica+DM_MantencionTipo1[0][0].Mecanica > 0 ? DM_MantencionTipo1[0][0].Mecanica+DM_MantencionTipo2[0][0].Electrica : 0)
-        }
-        //console.log(val);
-        res.json(val);
-    } catch (error) {
-        console.log(error);
-        return res.status(500),json({
-           message:"Ha ocurrido un error",
-           data:{}
-       })         
-    }
-}
-const ListComponentesMantencion = async(req,res)=>{
-    var Time = parseInt(typeof req.params.year === "string" ? req.params.year : "1");
-    var CampofechaDB = "";
-    if (!Number.isInteger(Time)) {
-        console.log("El Fecha no es valido");
-        return res.status(500),json({
-           message:"Ingrese una Fecha valido",
-           data:{}
-       }) 
-    }if (Time>12) {
-        CampofechaDB = "Año";
-    }else{
-        CampofechaDB = "Mes";
-    }
-    try {
-        const DM_MantencionComponente1 = await sequelize.query("SELECT SUM(HrsTotales_mantencion) AS 'Comp1',SUM(Hrs_programadas) AS 'Programadas',SUM(Hrs_noProgramadas) AS 'NoProgramadas' FROM [MantencionDatamart].[dbo].[FACT_Mantencion] INNER JOIN DIM_Tiempo ON[FACT_Mantencion].Id_tiempo = DIM_Tiempo.Id_tiempo WHERE Id_componente = 1 AND "+CampofechaDB+" = "+Time);
-        const DM_MantencionComponente2 = await sequelize.query("SELECT SUM(HrsTotales_mantencion) AS 'Comp2',SUM(Hrs_programadas) AS 'Programadas',SUM(Hrs_noProgramadas) AS 'NoProgramadas' FROM [MantencionDatamart].[dbo].[FACT_Mantencion] INNER JOIN DIM_Tiempo ON[FACT_Mantencion].Id_tiempo = DIM_Tiempo.Id_tiempo WHERE Id_componente = 2 AND "+CampofechaDB+" = "+Time);
-        const DM_MantencionComponente3 = await sequelize.query("SELECT SUM(HrsTotales_mantencion) AS 'Comp3',SUM(Hrs_programadas) AS 'Programadas',SUM(Hrs_noProgramadas) AS 'NoProgramadas' FROM [MantencionDatamart].[dbo].[FACT_Mantencion] INNER JOIN DIM_Tiempo ON[FACT_Mantencion].Id_tiempo = DIM_Tiempo.Id_tiempo WHERE Id_componente = 3 AND "+CampofechaDB+" = "+Time);
-        const DM_MantencionComponente4 = await sequelize.query("SELECT SUM(HrsTotales_mantencion) AS 'Comp4',SUM(Hrs_programadas) AS 'Programadas',SUM(Hrs_noProgramadas) AS 'NoProgramadas' FROM [MantencionDatamart].[dbo].[FACT_Mantencion] INNER JOIN DIM_Tiempo ON[FACT_Mantencion].Id_tiempo = DIM_Tiempo.Id_tiempo WHERE Id_componente = 4 AND "+CampofechaDB+" = "+Time);
-        const val1 = [Math.round(DM_MantencionComponente1[0][0].Comp1),Math.round(DM_MantencionComponente1[0][0].Programadas),Math.round(DM_MantencionComponente1[0][0].NoProgramadas)];
-        const val2 = [Math.round(DM_MantencionComponente2[0][0].Comp2),Math.round(DM_MantencionComponente2[0][0].Programadas),Math.round(DM_MantencionComponente2[0][0].NoProgramadas)];
-        const val3 = [Math.round(DM_MantencionComponente3[0][0].Comp3),Math.round(DM_MantencionComponente3[0][0].Programadas),Math.round(DM_MantencionComponente3[0][0].NoProgramadas)];
-        const val4 = [Math.round(DM_MantencionComponente4[0][0].Comp4),Math.round(DM_MantencionComponente4[0][0].Programadas),Math.round(DM_MantencionComponente4[0][0].NoProgramadas)];
-        const val = {
-            'Comp1': val1[0] ? val1 : 0 ,
-            'Comp2': val2[0] ? val2 : 0 ,
-            'Comp3': val3[0] ? val3 : 0 ,
-            'Comp4': val4[0] ? val4 : 0 ,
-            Total: (val1[0]+val2[0]+val3[0]+val4[0] > 0 ? val1[0]+val2[0]+val3[0]+val4[0] : 0)
-        }
-        console.log(val);
-        res.json(val);
-    } catch (error) {
-        console.log(error);
-        return res.status(500),json({
-           message:"Ha ocurrido un error",
-           data:{}
-       })         
-    }
-}
-
-const ListEventoMantencion = async(req,res)=>{
-    var Time = parseInt(typeof req.params.year === "string" ? req.params.year : "1");
-    var CampofechaDB = "";
-    if (!Number.isInteger(Time)) {
-        console.log("El Fecha no es valido");
-        return res.status(500),json({
-           message:"Ingrese una Fecha valido",
-           data:{}
-       }) 
-    }if (Time>12) {
-        CampofechaDB = "Año";
-    }else{
-        CampofechaDB = "Mes";
-    }
-    try {
-        const DM_MantencioEvento = await sequelize.query("SELECT SUM(HrsTotales_mantencion) AS 'Totales',SUM(Hrs_programadas) AS 'Programadas',SUM(Hrs_noProgramadas) AS 'NoProgramadas' FROM [MantencionDatamart].[dbo].[FACT_Mantencion] INNER JOIN DIM_Tiempo ON[FACT_Mantencion].Id_tiempo = DIM_Tiempo.Id_tiempo WHERE "+CampofechaDB+" = "+Time);
-        DM_MantencioEvento[0][0].Totales = DM_MantencioEvento[0][0].Totales ? trucatedecimal(DM_MantencioEvento[0][0].Totales,2) : 0;
-        DM_MantencioEvento[0][0].Programadas = DM_MantencioEvento[0][0].Programadas ? trucatedecimal(DM_MantencioEvento[0][0].Programadas,2) : 0;
-        DM_MantencioEvento[0][0].NoProgramadas = DM_MantencioEvento[0][0].NoProgramadas ? trucatedecimal(DM_MantencioEvento[0][0].NoProgramadas,2) : 0
-        // console.log(DM_MantencioEvento[0][0].Programadas);
-        res.json(DM_MantencioEvento);
-    } catch (error) {
-        console.log(error);
-        return res.status(500),json({
-           message:"Ha ocurrido un error",
-           data:{}
-       })         
-    }
-}
+//********************************************************
+// ******************************************* */
 
 const ListDisponibilidadAnual = async(req,res)=>{
     const errors = []
     let condicion1 ="",condicion2="";
     //VALIDACIÓN DE PARAMETROS AÑO EQUIPO
     if (req.params.year.length === 4 && req.params.year > 1900 && req.params.equipo) {
-        console.log("parametros");
         const maquinariaResult = await validExist("maquinaria",req.params.equipo,"Nombre_maquinaria","NOTEXIST");
         const yearResult = await validateTypes(req.params.year,"number");
         maquinariaResult != null && errors.push(maquinariaResult);
@@ -152,7 +29,7 @@ const ListDisponibilidadAnual = async(req,res)=>{
         const MetasDisponibilidad = await sequelize.query("SELECT * FROM Mantencion_chancador.dbo.Programa_Mantencion pm,mantencion_chancador.dbo.Maquinaria mq WHERE mq.Id_maquinaria = pm.Id_maquinaria"+condicion1)
         .then(res => res[0]);
 
-        console.log(MetasDisponibilidad)
+        // console.log(MetasDisponibilidad)
         if (DM_MantencionDisponibilidad && MetasDisponibilidad.length>0) {
             //JOIN METAS & DATA
             for (let i = 0; i < MetasDisponibilidad.length; i++) {
@@ -177,134 +54,6 @@ const ListDisponibilidadAnual = async(req,res)=>{
        })         
     }
 }
-
-const ListMTTR = async(req,res)=>{
-    let meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-    let dispmeses = [];
-
-    var yearTime = parseInt(typeof req.params.year === "string" ? req.params.year : "1");
-    if (!Number.isInteger(yearTime)) {
-        console.log("El Año no es valido");
-        return res.status(500),json({
-           message:"Ingrese un año valido",
-           data:{}
-       }) 
-    }
-    try {
-        const DM_MantencionMTTR = await sequelize.query("SELECT DIM_Tiempo.NombreMes,DIM_Tiempo.Id_tiempo, FACT_Mantencion.MTTR FROM [MantencionDatamart].[dbo].[FACT_Mantencion] INNER JOIN DIM_Tiempo ON[FACT_Mantencion].Id_tiempo = DIM_Tiempo.Id_tiempo WHERE  Año = "+yearTime)
-        .then(res => res[0])
-        
-        meses.forEach(element => {
-            var sum = 0
-            var index = 0;
-            DM_MantencionMTTR.forEach(val => {
-                if (element===val.NombreMes) {
-                    sum += val.MTTR;   
-                    index++;              
-                }
-            });
-            //console.log(trucatedecimal((sum/index),2));
-            dispmeses.push(trucatedecimal((sum/index),2));
-        });
-        for (let i = 0; i < meses.length; i++) {
-            
-           // console.log(meses[i]+" " +dispmeses[i])
-        }
-        res.json(dispmeses);
-    } catch (error) {
-        console.log(error);
-        return res.status(500),json({
-           message:"Ha ocurrido un error",
-           data:{}
-       })         
-    }
-}
-
-const ListMTBF = async(req,res)=>{
-    let meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-    let dispmeses = [];
-
-    var yearTime = parseInt(typeof req.params.year === "string" ? req.params.year : "1");
-    if (!Number.isInteger(yearTime)) {
-        console.log("El Año no es valido");
-        return res.status(500),json({
-           message:"Ingrese un año valido",
-           data:{}
-       }) 
-    }
-    try {
-        const DM_MantencionMTBF = await sequelize.query("SELECT DIM_Tiempo.NombreMes,DIM_Tiempo.Id_tiempo, FACT_Mantencion.MTBF FROM [MantencionDatamart].[dbo].[FACT_Mantencion] INNER JOIN DIM_Tiempo ON[FACT_Mantencion].Id_tiempo = DIM_Tiempo.Id_tiempo WHERE Año = "+yearTime)
-        .then(res => res[0])
-        
-        meses.forEach(element => {
-            var sum = 0
-            var index = 0;
-            DM_MantencionMTBF.forEach(val => {
-                if (element===val.NombreMes) {
-                    sum += val.MTBF;   
-                    index++;              
-                }
-            });
-            //console.log(trucatedecimal((sum/index),2));
-            dispmeses.push(trucatedecimal((sum/index),2));
-        });
-        for (let i = 0; i < meses.length; i++) {
-            
-            //console.log(meses[i]+" " +dispmeses[i])
-        }
-        res.json(dispmeses);
-    } catch (error) {
-        console.log(error);
-        return res.status(500),json({
-           message:"Ha ocurrido un error",
-           data:{}
-       })         
-    }
-}
-const ListMTBME = async(req,res)=>{
-    let meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-    let dispmeses = [];
-
-    var yearTime = parseInt(typeof req.params.year === "string" ? req.params.year : "1");
-    if (!Number.isInteger(yearTime)) {
-        console.log("El Año no es valido");
-        return res.status(500),json({
-           message:"Ingrese un año valido",
-           data:{}
-       }) 
-    }
-    try {
-        const DM_MantencionMTBME = await sequelize.query("SELECT DIM_Tiempo.NombreMes,DIM_Tiempo.Id_tiempo, FACT_Mantencion.MTBME FROM [MantencionDatamart].[dbo].[FACT_Mantencion] INNER JOIN DIM_Tiempo ON[FACT_Mantencion].Id_tiempo = DIM_Tiempo.Id_tiempo WHERE Año = "+yearTime)
-        .then(res => res[0])
-        
-        meses.forEach(element => {
-            var sum = 0
-            var index = 0;
-            DM_MantencionMTBME.forEach(val => {
-                if (element===val.NombreMes) {
-                    sum += val.MTBME;   
-                    index++;              
-                }
-            });
-            //console.log(trucatedecimal((sum/index),2));
-            dispmeses.push(trucatedecimal((sum/index),2));
-        });
-        for (let i = 0; i < meses.length; i++) {
-            
-            //console.log(meses[i]+" " +dispmeses[i])
-        }
-        res.json(dispmeses);
-    } catch (error) {
-        console.log(error);
-        return res.status(500),json({
-           message:"Ha ocurrido un error",
-           data:{}
-       })         
-    }
-}
-
-//********************************************************
-// ******************************************* */
 
 const LISTAVIEWDETENCIONES = async(req,res)=>{
     try {
@@ -337,15 +86,79 @@ const LISTAVIEWDISPONIBILIDAD = async(req,res)=>{
     }
 }
 
+/*  PARAMS JOB SHEDULE
+    @intjob_name = N'JobDetencionesDM', --JOB NAME TO COMPARE
+    @intname=N'Shedule_JobDetencionesDM', -- SHEDULE NAME TO ASSIGN
+    @intenabled=1, --1 ENABLE --0 DISABLE
+    @intfreq_type=4, --1 once --4 daily --8 weekly -- 16 monthly  --32 Monthly, relative to freq interval --64 Run when SQLServerAgent --128 PC ON
+    @intfreq_interval=1, 
+    @intfreq_subday_type=1, 
+    @intfreq_subday_interval=0, 
+    @intfreq_relative_interval=0, 
+    @intfreq_recurrence_factor=1, 
+    @intactive_start_date=20201217, --YYYYMMDD START OF SHEDULE
+    @intactive_end_date=20221231, --YYYYMMDD (this represents no end date)
+    @intactive_start_time=145700, --HHMMSS TIME OF EXECUTION OF JOB
+    @intactive_end_time=235959; --HHMMSS MAX TIME OF EXECUTION
+*/
+
+const ScheduleETL = async(req,res)=>{
+    try {
+        const {intjob_name, intname, intenabled,intfreq_type,intfreq_interval,intfreq_subday_type,intfreq_subday_interval,intfreq_relative_interval,intfreq_recurrence_factor,intactive_start_date,intactive_end_date,intactive_start_time,intactive_end_time} = req.body
+        console.log("BANDERA");
+        const ETL = await sequelize.query(
+            "EXEC UPDATE_SHEDULEJOB_ETL @intjob_name = :intjob_name, @intname = :intname, @intenabled = :intenabled, @intfreq_type = :intfreq_type, @intfreq_interval = :intfreq_interval, @intfreq_subday_type = :intfreq_subday_type, @intfreq_subday_interval = :intfreq_subday_interval, @intfreq_relative_interval = :intfreq_relative_interval, @intfreq_recurrence_factor = :intfreq_recurrence_factor, @intactive_start_date = :intactive_start_date, @intactive_end_date = :intactive_end_date, @intactive_start_time = :intactive_start_time, @intactive_end_time = :intactive_end_time"
+            ,{
+                replacements:{ 
+                    intjob_name,
+                    intname,
+                    intenabled,
+                    intfreq_type,
+                    intfreq_interval,
+                    intfreq_subday_type,
+                    intfreq_subday_interval,
+                    intfreq_relative_interval,
+                    intfreq_recurrence_factor,
+                    intactive_start_date,
+                    intactive_end_date,
+                    intactive_start_time,
+                    intactive_end_time
+                }
+                , 'type': sequelize.QueryTypes.SELECT })
+            .then((resultValues) => { 
+                console.log('resultValues', resultValues); 
+                res.json({success:"Se ha programado el evento ETL para las "+intactive_start_time});
+            })  
+            .catch((error) => { console.log('Error'); res.json({error})});
+        if (ETL) {
+            console.log(ETL);
+            res.json({ETL});
+        }
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500),json({
+           message:"Ha ocurrido un error"
+       })         
+    }
+}
+const GETSCHEDULEJOB = async(req,res)=>{
+    try {
+        const ScheduleJob = await sequelize.query("SELECT msdb.dbo.sysjobschedules.next_run_date,msdb.dbo.sysjobschedules.next_run_time ,msdb.dbo.sysschedules.freq_type, msdb.dbo.sysschedules.active_start_date, msdb.dbo.sysschedules.active_end_date, msdb.dbo.sysschedules.active_start_time, msdb.dbo.sysschedules.active_end_time FROM msdb.dbo.sysjobs JOIN msdb.dbo.sysjobschedules ON sysjobs.job_id = sysjobschedules.job_id JOIN msdb.dbo.sysschedules ON sysjobschedules.schedule_id = sysschedules.schedule_id WHERE msdb.dbo.sysjobs.job_id =(SELECT job_id FROM msdb.dbo.sysjobs WHERE (name = 'JobDetencionesDM'))");
+        res.json({"ScheduleJob":ScheduleJob[0][0]});
+    } catch (error) {
+        console.log(error);
+        return res.status(500),json({
+           message:"Ha ocurrido un error",
+           data:{}
+       })         
+    }
+}
+
 module.exports = {
-    ListDMMantencionesDisponibilidad,
-    ListTiposMantencion,
-    ListComponentesMantencion,
-    ListEventoMantencion,
     ListDisponibilidadAnual,
-    ListMTTR,
-    ListMTBF,
-    ListMTBME,
     LISTAVIEWDETENCIONES,
-    LISTAVIEWDISPONIBILIDAD
+    LISTAVIEWDISPONIBILIDAD,
+    ScheduleETL,
+    GETSCHEDULEJOB
 };

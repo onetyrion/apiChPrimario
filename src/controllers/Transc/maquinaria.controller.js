@@ -25,7 +25,8 @@ const CreatingMaquinaria = async(req,res)=>{
             Id_area,
             Nombre_maquinaria,
             Estado,
-            Id_tipo
+            Id_tipo,
+            Empresa:"Compañia Contractual Minera Candelaria"
         });
         if (newUser) {
             return res.json({
@@ -93,7 +94,7 @@ const UpdateMaquinaria = async(req,res)=>{
 }
 //DELETE MAQUINARIA
 const DeleteMaquinaria = async(req,res)=>{
-    console.log(req.params.Id_maquinaria==='0')
+    // console.log(req.params.Id_maquinaria==='0')
     if (isNaN(Number(req.params.Id_maquinaria)) || req.params.Id_maquinaria==='0') {
         return res.status(422).json({errors: "La ID ingresada no es válida",campo:req.params.Id_maquinaria})
     }

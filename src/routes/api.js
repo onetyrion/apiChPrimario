@@ -29,7 +29,7 @@ router.use('/users', middleware.checkToken, apiUserRoute);
 router.use('/login',middleware.checkToken, loginRoute);
 router.use('/registrarusuario',middleware.checkToken,fUsuario);
 router.use('/vauth', middleware.checkToken, vauthRoute);
-router.use('/dm',factRouter);
+router.use('/dm',middleware.checkToken,factRouter);
 
 //Routers TRANSC
 // router.use('/mantencion',middleware.checkToken,mantencionRoute);

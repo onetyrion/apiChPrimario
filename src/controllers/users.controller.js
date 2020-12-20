@@ -1,5 +1,5 @@
 
-const { users } = require("../database/database");
+const { users, login } = require("../database/database");
 const { validExist, validateTypes } = require("./Helpers");
 
 //POST Create User
@@ -63,7 +63,8 @@ const UpdateUser = async(req,res)=>{
     try {
         const usersResult = await validExist("users",Rut,"Rut","NOTEXIST");
         const empresaResult = await validExist("empresa",1,"Id_empresa","NOTEXIST");
-        const EstadoResult = await validateTypes(Estado,"boolean")
+        let Rol = 3;
+        // const EstadoResult = await validateTypes(Estado,"boolean")
         usersResult != null && errors.push(usersResult);
         empresaResult != null && errors.push(empresaResult);
         // EstadoResult != null && errors.push(EstadoResult);
@@ -72,7 +73,18 @@ const UpdateUser = async(req,res)=>{
             console.log('errors', errors)
             return res.status(422).json({errors});
         }
-
+        switch (Cargo) {
+          case "Administrador":
+            Rol=1;
+            break;
+          case "Planificador":
+            Rol=2;
+            break;  
+          default:
+            Rol=3;
+            break;
+        }
+        console.log(Cargo,Rol)
         await users.update({
             Nombre,
             Apellidos,
@@ -83,7 +95,13 @@ const UpdateUser = async(req,res)=>{
         },{
             where:{ Rut}
         });
-        console.log("Usuario Modificado");
+        await login.update({
+            Id_rol:Rol  
+        },{
+            where:{ Rut}
+        })
+        .then((res)=>console.log(res[0]))
+        // console.log("Usuario Modificado");
         res.json({success:'Se ha modificado'});
     } catch (error) {
         console.log(error);

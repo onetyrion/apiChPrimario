@@ -28,18 +28,25 @@ const ListDisponibilidadAnual = async(req,res)=>{
         .then(res => res[0][0]);
         const MetasDisponibilidad = await sequelize.query("SELECT * FROM Mantencion_chancador.dbo.Programa_Mantencion pm,mantencion_chancador.dbo.Maquinaria mq WHERE mq.Id_maquinaria = pm.Id_maquinaria"+condicion1)
         .then(res => res[0]);
-
         // console.log(MetasDisponibilidad)
         if (DM_MantencionDisponibilidad && MetasDisponibilidad.length>0) {
             //JOIN METAS & DATA
             for (let i = 0; i < MetasDisponibilidad.length; i++) {
-                
+                if (MetasDisponibilidad[i].Id_kpi === 1) { //INDICADOR DISPONIBILIDAD
+                    DM_MantencionDisponibilidad.Disponibilidad_Metas = MetasDisponibilidad[i].Meta;
+                }else if (MetasDisponibilidad[i].Id_kpi === 2) { //INDICADOR MTTR
+                    DM_MantencionDisponibilidad.MTTR_Metas = MetasDisponibilidad[i].Meta;
+                }else if (MetasDisponibilidad[i].Id_kpi === 3) { //INDICADOR MTBF
+                    DM_MantencionDisponibilidad.MTBF_Metas = MetasDisponibilidad[i].Meta;
+                }else if (MetasDisponibilidad[i].Id_kpi === 4) { //INDICADOR MTBME
+                    DM_MantencionDisponibilidad.MTBME_Metas = MetasDisponibilidad[i].Meta;
+                }
             }
-            DM_MantencionDisponibilidad.Disponibilidad_Metas = MetasDisponibilidad[0].Meta;
-            DM_MantencionDisponibilidad.MTTR_Metas = MetasDisponibilidad[1].Meta;
-            DM_MantencionDisponibilidad.MTBF_Metas = MetasDisponibilidad[2].Meta;
-            DM_MantencionDisponibilidad.MTBME_Metas = MetasDisponibilidad[3].Meta;
-            
+            // DM_MantencionDisponibilidad.Disponibilidad_Metas = MetasDisponibilidad[0].Meta;
+            // DM_MantencionDisponibilidad.MTTR_Metas = MetasDisponibilidad[1].Meta;
+            // DM_MantencionDisponibilidad.MTBF_Metas = MetasDisponibilidad[2].Meta;
+            // DM_MantencionDisponibilidad.MTBME_Metas = MetasDisponibilidad[3].Meta;
+            // console.log(MetasDisponibilidad);
             res.json(DM_MantencionDisponibilidad);   
             
         }else{
@@ -144,7 +151,8 @@ const ScheduleETL = async(req,res)=>{
 }
 const GETSCHEDULEJOB = async(req,res)=>{
     try {
-        const ScheduleJob = await sequelize.query("SELECT msdb.dbo.sysjobschedules.next_run_date,msdb.dbo.sysjobschedules.next_run_time ,msdb.dbo.sysschedules.freq_type, msdb.dbo.sysschedules.active_start_date, msdb.dbo.sysschedules.active_end_date, msdb.dbo.sysschedules.active_start_time, msdb.dbo.sysschedules.active_end_time FROM msdb.dbo.sysjobs JOIN msdb.dbo.sysjobschedules ON sysjobs.job_id = sysjobschedules.job_id JOIN msdb.dbo.sysschedules ON sysjobschedules.schedule_id = sysschedules.schedule_id WHERE msdb.dbo.sysjobs.job_id =(SELECT job_id FROM msdb.dbo.sysjobs WHERE (name = 'JobDetencionesDM'))");
+        // const ScheduleJob = await sequelize.query("SELECT msdb.dbo.sysjobschedules.next_run_date,msdb.dbo.sysjobschedules.next_run_time ,msdb.dbo.sysschedules.freq_type, msdb.dbo.sysschedules.active_start_date, msdb.dbo.sysschedules.active_end_date, msdb.dbo.sysschedules.active_start_time, msdb.dbo.sysschedules.active_end_time FROM msdb.dbo.sysjobs JOIN msdb.dbo.sysjobschedules ON sysjobs.job_id = sysjobschedules.job_id JOIN msdb.dbo.sysschedules ON sysjobschedules.schedule_id = sysschedules.schedule_id WHERE msdb.dbo.sysjobs.job_id =(SELECT job_id FROM msdb.dbo.sysjobs WHERE (name = 'JobDetencionesDM'))");
+        const ScheduleJob = await sequelize.query("SELECT * FROM DetencionDM.dbo.JOBSHISTORY");
         res.json({"ScheduleJob":ScheduleJob[0][0]});
     } catch (error) {
         console.log(error);

@@ -1,9 +1,9 @@
 const {	Sequelize} = require('sequelize');
-const config = require('../../config/config');
+// const config = require('../../config/config');
 
 //models
-const FACT_MantencionModel = require('../models/DM/FACT_Mantencion');
-const DIM_TiempoModel = require('../models/DM/DIM_Tiempo');
+// const FACT_MantencionModel = require('../models/DM/FACT_Mantencion');
+// const DIM_TiempoModel = require('../models/DM/DIM_Tiempo');
 
 const sequelize = new Sequelize(
 	process.env.DATABASE_CREDENTIALS_DBNAMEDM, 
